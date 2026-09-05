@@ -16,7 +16,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-export default function AdminNoticesPage() {
+function NoticesContent() {
   const searchParams = useSearchParams();
   const { currentUser } = useRole();
 
@@ -375,5 +375,13 @@ export default function AdminNoticesPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AdminNoticesPage() {
+  return (
+    <React.Suspense fallback={<div className="p-10 text-center text-xs text-slate-400">Loading notices...</div>}>
+      <NoticesContent />
+    </React.Suspense>
   );
 }

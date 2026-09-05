@@ -6,6 +6,7 @@ import { useRole } from '@/lib/RoleContext';
 import SymptomSelector from '@/components/SymptomSelector';
 import BatchQuickCheck from '@/components/BatchQuickCheck';
 import SafetyAlertBanner from '@/components/SafetyAlertBanner';
+import BarcodeQuickFill from '@/components/BarcodeQuickFill';
 import {
   FilePlus2,
   Save,
@@ -297,13 +298,23 @@ export default function InitialCaseReportPage() {
 
           {/* Section 2: Suspected IV Fluid / Medication & Batch Verification */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2 pb-2 border-b border-slate-200">
-              <span className="w-5 h-5 rounded-full bg-medred-100 text-medred-700 text-xs font-bold flex items-center justify-center">
-                2
-              </span>
-              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
-                Suspected Drug / IV Fluid &amp; Batch Verification
-              </h2>
+            <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+              <div className="flex items-center space-x-2">
+                <span className="w-5 h-5 rounded-full bg-medred-100 text-medred-700 text-xs font-bold flex items-center justify-center">
+                  2
+                </span>
+                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                  Suspected Drug / IV Fluid &amp; Batch Verification
+                </h2>
+              </div>
+              <BarcodeQuickFill
+                batches={batches}
+                onSelectBatch={(batchId, dose, route) => {
+                  handleBatchChange(batchId);
+                  if (dose) setDoseUsed(dose);
+                  if (route) setRouteUsed(route);
+                }}
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -79,6 +79,16 @@ export async function PATCH(
       medicationId,
       amendmentNote,
       editedById,
+      patientInitials,
+      patientAge,
+      patientSex,
+      patientWeightKg,
+      ward,
+      reactionStartDate,
+      reactionDescription,
+      seriousnessFlags,
+      otherHistory,
+      medications,
     } = body;
 
     const currentReport = await db.adrReport.findUnique({
@@ -100,9 +110,20 @@ export async function PATCH(
     const updates: any = {};
     const amendmentsToCreate: any[] = [];
 
+    // Draft / Case update fields
+    if (patientInitials !== undefined) updates.patientInitials = patientInitials;
+    if (patientAge !== undefined) updates.patientAge = patientAge;
+    if (patientSex !== undefined) updates.patientSex = patientSex;
+    if (patientWeightKg !== undefined) updates.patientWeightKg = patientWeightKg ? parseFloat(patientWeightKg) : null;
+    if (ward !== undefined) updates.ward = ward;
+    if (reactionStartDate !== undefined) updates.reactionStartDate = new Date(reactionStartDate);
+    if (reactionDescription !== undefined) updates.reactionDescription = reactionDescription;
+    if (seriousnessFlags !== undefined) updates.seriousnessFlags = seriousnessFlags;
+    if (otherHistory !== undefined) updates.otherHistory = otherHistory || null;
+
     if (status && status !== currentReport.status) {
       updates.status = status;
-      if (editorId) {
+      if (editorId && currentReport.status !== 'draft') {
         amendmentsToCreate.push({
           fieldName: 'Status Workflow',
           oldValue: currentReport.status,
@@ -114,7 +135,7 @@ export async function PATCH(
 
     if (severity && severity !== currentReport.severity) {
       updates.severity = severity;
-      if (editorId) {
+      if (editorId && currentReport.status !== 'draft') {
         amendmentsToCreate.push({
           fieldName: 'Severity Assessment',
           oldValue: currentReport.severity || 'moderate',
@@ -126,7 +147,7 @@ export async function PATCH(
 
     if (outcome && outcome !== currentReport.outcome) {
       updates.outcome = outcome;
-      if (editorId) {
+      if (editorId && currentReport.status !== 'draft') {
         amendmentsToCreate.push({
           fieldName: 'Clinical Outcome',
           oldValue: currentReport.outcome || 'unknown',
@@ -140,7 +161,28 @@ export async function PATCH(
       updates.reactionRecoveryDate = new Date(reactionRecoveryDate);
     }
 
-    // Update medication causality if provided
+    // Update medications if provided (for draft updates)
+    if (Array.isArray(medications) && medications.length > 0) {
+      // Clear existing medications and recreate
+      await db.adrMedication.deleteMany({ where: { adrReportId: id } });
+      await db.adrMedication.createMany({
+        data: medications.map((med: any, index: number) => ({
+          adrReportId: id,
+          batchId: med.batchId,
+          doseUsed: med.doseUsed || null,
+          routeUsed: med.routeUsed || 'IV Infusion',
+          frequency: med.frequency || null,
+          therapyStartDate: med.therapyStartDate ? new Date(med.therapyStartDate) : null,
+          therapyStopDate: med.therapyStopDate ? new Date(med.therapyStopDate) : null,
+          indication: med.indication || null,
+          actionTaken: med.actionTaken || 'withdrawn',
+          reintroductionReaction: med.reintroductionReaction || 'na',
+          rowOrder: index,
+        })),
+      });
+    }
+
+    // Update medication causality if provided (by ADR head)
     if (causalityAssessment) {
       const targetMed = medicationId
         ? currentReport.medications.find((m) => m.id === medicationId)

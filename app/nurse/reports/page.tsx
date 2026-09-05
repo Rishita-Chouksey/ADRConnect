@@ -175,13 +175,32 @@ export default function NurseReportsListPage() {
                       </td>
 
                       <td className="p-3.5 text-right space-x-2">
-                        <Link
-                          href={`/report/${report.id}/form`}
-                          className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-medred-50 hover:bg-medred-100 text-medred-700 border border-rose-200 transition-colors"
-                        >
-                          <FileText className="w-3.5 h-3.5 text-medred-600" />
-                          <span>Digital PvPI Form</span>
-                        </Link>
+                        {report.status === 'draft' ? (
+                          <Link
+                            href={`/nurse/report/${report.id}`}
+                            className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-sm transition-all"
+                          >
+                            <FilePlus2 className="w-3.5 h-3.5" />
+                            <span>Resume Draft</span>
+                          </Link>
+                        ) : (
+                          <>
+                            <Link
+                              href={`/nurse/report/${report.id}`}
+                              className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors"
+                            >
+                              <FileText className="w-3.5 h-3.5 text-slate-600" />
+                              <span>View Case</span>
+                            </Link>
+                            <Link
+                              href={`/report/${report.id}/form`}
+                              className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-medred-50 hover:bg-medred-100 text-medred-700 border border-rose-200 transition-colors"
+                            >
+                              <Printer className="w-3.5 h-3.5 text-medred-600" />
+                              <span>PvPI Form</span>
+                            </Link>
+                          </>
+                        )}
                       </td>
                     </tr>
                   );
