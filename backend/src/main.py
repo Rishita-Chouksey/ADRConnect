@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.config.settings import settings
 from src.api.auth import router as auth_router
 
+from fastapi import FastAPI
+from src.api.auth import router as auth_router
+from src.api.reports import router as reports_router # <-- Add import
+
 app = FastAPI(
     title="ADRConnect API",
     description="Backend API services for ADR reporting, batch traceability, and alerts",
@@ -34,3 +38,12 @@ async def root():
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+app = FastAPI(title="ADRConnect API", version="1.0.0")
+
+app.include_router(auth_router, prefix="/api")
+app.include_router(reports_router, prefix="/api") # <-- Register router
+
+@app.get("/")
+async def root():
+    return {"message": "ADRConnect API Service Active"}
