@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.config.database import AsyncSessionLocal
 from src.schemas.report import ADRReportCreate
 from src.core.schemas.user import CurrentUser
-from src.api.deps import get_current_user
+from src.api.deps import get_current_user, require_roles
 
 router = APIRouter(prefix="/reports", tags=["ADR Reports"])
 
@@ -14,14 +14,18 @@ async def get_db():
     async with AsyncSessionLocal() as session:
         yield session
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+# 1. Fill & Submit ADR Form (Nurses only)
+@router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles(["nurse"]))]
+)
 async def create_adr_report(
     report: ADRReportCreate,
     current_user: CurrentUser = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Submits an ADR Report and inserts linked suspected medications in a relational transaction."""
-    
+    """Allows Nurses to submit a new ADR report."""
     report_query = text("""
         INSERT INTO adr_reports (
             local_uuid, hospital_id, reporter_user_id, case_type, submission_state,
@@ -88,19 +92,23 @@ async def create_adr_report(
             await db.execute(med_query, med_params)
 
         await db.commit()
-        return {"message": "ADR Report and medications submitted successfully", "report_id": adr_report_id}
+        return {"message": "ADR Report submitted successfully", "report_id": adr_report_id}
 
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-
-@router.get("/", status_code=status.HTTP_200_OK)
+# 2. View Reports Dashboard (ADR Head only)
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(require_roles(["adr_head"]))]
+)
 async def list_adr_reports(
     current_user: CurrentUser = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Retrieves all submitted ADR reports for the logged-in user's hospital."""
+    """Retrieves all hospital ADR reports for the ADR Head to review."""
     query = text("""
         SELECT 
             r.*,
