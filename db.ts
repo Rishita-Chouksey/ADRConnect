@@ -20,3 +20,35 @@ export const db =
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = db;
 }
+
+/**
+ * Executes a database operation with exponential backoff retry logic.
+ * Handles intermittent Supabase pooler connection failures (P1001).
+ */
+export async function withDbRetry<T>(
+  operation: () => Promise<T>,
+  maxRetries = 3,
+  delayMs = 300
+): Promise<T> {
+  let attempt = 0;
+  while (true) {
+    try {
+      return await operation();
+    } catch (error: any) {
+      attempt++;
+      const isConnError =
+        error?.code === 'P1001' ||
+        error?.code === 'P1002' ||
+        error?.message?.includes("Can't reach database server") ||
+        error?.message?.includes('EngineConnError') ||
+        error?.message?.includes('Closed connection');
+
+      if (isConnError && attempt <= maxRetries) {
+        console.warn(`[DB Retry ${attempt}/${maxRetries}] Retrying database operation after connection drop...`);
+        await new Promise((res) => setTimeout(res, delayMs * Math.pow(2, attempt - 1)));
+      } else {
+        throw error;
+      }
+    }
+  }
+}

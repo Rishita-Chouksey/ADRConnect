@@ -77,8 +77,6 @@ export default function AdrHeadDashboard() {
         </div>
       </div>
 
-      <SafetyAlertBanner />
-
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">

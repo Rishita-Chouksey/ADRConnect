@@ -37,13 +37,18 @@ export async function POST(req: NextRequest) {
     }
 
     let authorId = createdById;
-    if (!authorId) {
-      const admin = await db.user.findFirst({ where: { role: 'admin' } });
-      authorId = admin?.id;
+    if (authorId) {
+      const exists = await db.user.findUnique({ where: { id: authorId } });
+      if (!exists) authorId = null;
     }
 
     if (!authorId) {
-      return NextResponse.json({ error: 'Admin user not found.' }, { status: 400 });
+      const defaultUser = await db.user.findFirst({ where: { role: 'admin' } }) || await db.user.findFirst();
+      authorId = defaultUser?.id;
+    }
+
+    if (!authorId) {
+      return NextResponse.json({ error: 'Author user not found.' }, { status: 400 });
     }
 
     const notice = await db.safetyNotice.create({

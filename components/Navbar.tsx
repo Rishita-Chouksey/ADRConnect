@@ -16,58 +16,40 @@ import {
   CheckCircle2,
   ChevronRight,
   Printer,
+  LogOut,
+  FileText,
 } from 'lucide-react';
 
 export default function Navbar() {
-  const { currentUser, switchRole, activeRole } = useRole();
+  const { currentUser, activeRole, logout } = useRole();
   const pathname = usePathname();
+
+  // Hide navbar on login page
+  if (pathname === '/login') return null;
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
-      {/* Top Demo Role Switcher Bar */}
+      {/* Official Government Top Bar Header */}
       <div className="bg-slate-900 text-slate-200 text-xs px-4 py-1.5 flex flex-wrap items-center justify-between border-b border-slate-800">
         <div className="flex items-center space-x-2 font-medium">
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-slate-400">Hospital:</span>
           <span className="text-white font-semibold">District Maternal Hospital</span>
           <span className="text-slate-500">|</span>
-          <span className="text-slate-400">Vigilance Unit Active</span>
+          <span className="text-slate-400">PvPI Vigilance Unit Active</span>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <span className="text-slate-400 font-medium hidden sm:inline">Active Persona:</span>
-          <div className="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
-            <button
-              onClick={() => switchRole('nurse')}
-              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
-                activeRole === 'nurse'
-                  ? 'bg-medred-600 text-white shadow-sm'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700'
-              }`}
-            >
-              👩‍⚕️ Nurse (Asha)
-            </button>
-            <button
-              onClick={() => switchRole('adr_head')}
-              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
-                activeRole === 'adr_head'
-                  ? 'bg-medred-600 text-white shadow-sm'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700'
-              }`}
-            >
-              🩺 ADR Head (Dr. Priya)
-            </button>
-            <button
-              onClick={() => switchRole('admin')}
-              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
-                activeRole === 'admin'
-                  ? 'bg-medred-600 text-white shadow-sm'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700'
-              }`}
-            >
-              ⚙️ Admin (IT/Pharmacy)
-            </button>
+        <div className="flex items-center space-x-4">
+          <div className="text-slate-300 font-medium text-[11px] hidden sm:block">
+            Role: <span className="text-emerald-400 font-bold uppercase">{activeRole.replace('_', ' ')}</span>
           </div>
+          <button
+            onClick={logout}
+            className="inline-flex items-center space-x-1 px-2.5 py-1 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-200 border border-rose-800/60 text-xs font-bold transition-colors"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Sign Out</span>
+          </button>
         </div>
       </div>
 
@@ -88,7 +70,7 @@ export default function Navbar() {
                     PvPI
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-medium leading-none">IV Fluids & Injectables Pharmacovigilance</p>
+                <p className="text-[11px] text-slate-500 font-medium leading-none">IV Fluids &amp; Injectables Pharmacovigilance</p>
               </div>
             </Link>
 
@@ -97,8 +79,8 @@ export default function Navbar() {
             {/* Portal Badge */}
             <div className="hidden md:flex items-center space-x-1 text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
               <span className="text-slate-400">Portal:</span>
-              <span className="font-semibold text-slate-800 capitalize">
-                {activeRole === 'adr_head' ? 'ADR Head (Medical Officer)' : activeRole}
+              <span className="font-semibold text-slate-800 uppercase">
+                {activeRole === 'adr_head' ? 'ADR Head (Doctor)' : activeRole}
               </span>
             </div>
           </div>
@@ -136,7 +118,7 @@ export default function Navbar() {
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
-                  My Reports & Drafts
+                  My Reports &amp; Drafts
                 </Link>
                 <Link
                   href="/nurse/follow-up"
@@ -162,7 +144,7 @@ export default function Navbar() {
                   }`}
                 >
                   <BarChart3 className="w-4 h-4" />
-                  <span>Analytics & Trends</span>
+                  <span>Analytics &amp; Trends</span>
                 </Link>
                 <Link
                   href="/adr-head/cases"
@@ -185,6 +167,17 @@ export default function Navbar() {
                 >
                   <ShieldAlert className="w-4 h-4 text-medred-600" />
                   <span>Batch Risk Monitoring</span>
+                </Link>
+                <Link
+                  href="/adr-head/staff"
+                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    pathname === '/adr-head/staff'
+                      ? 'bg-rose-50 text-medred-600 font-semibold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                >
+                  <Users className="w-4 h-4 text-slate-700" />
+                  <span>Staff Directory</span>
                 </Link>
               </>
             )}
@@ -235,15 +228,15 @@ export default function Navbar() {
                   <span>Safety Broadcasts</span>
                 </Link>
                 <Link
-                  href="/admin/staff"
+                  href="/admin/documents"
                   className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    pathname === '/admin/staff'
+                    pathname === '/admin/documents'
                       ? 'bg-rose-50 text-medred-600 font-semibold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
-                  <Users className="w-4 h-4" />
-                  <span>Staff Directory</span>
+                  <FileText className="w-4 h-4 text-slate-700" />
+                  <span>Official Form Upload</span>
                 </Link>
               </>
             )}

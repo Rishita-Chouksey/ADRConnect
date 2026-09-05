@@ -125,15 +125,27 @@ export async function GET() {
       }
     }
 
-    // 3. Batch Risk Monitoring
+    // 3. Batch Risk Monitoring — Multi-factor Risk Score
     const batchRiskList = batches.map((b) => {
-      const reactionCount = b._count.medications;
-      const isHighAlert = b.highAlerts.length > 0;
-      let riskLevel: 'safe' | 'watchlist' | 'high_risk' = 'safe';
+      // Find all reports linked to this batch
+      const batchReports = reports.filter((r) =>
+        r.medications.some((m) => m.batchId === b.id)
+      );
 
-      if (isHighAlert || reactionCount >= 3) {
+      const reactionCount = batchReports.length;
+      const severeCount = batchReports.filter(
+        (r) => r.severity === 'severe' || r.severity === 'life_threatening'
+      ).length;
+      const uniqueReporters = new Set(batchReports.map((r) => r.reporterUserId)).size;
+      const isHighAlert = b.highAlerts.length > 0;
+
+      // Risk score formula: frequency + 3*(severe) + uniqueReporters + highAlertBonus
+      const riskScore = reactionCount * 1 + severeCount * 3 + uniqueReporters * 1 + (isHighAlert ? 5 : 0);
+
+      let riskLevel: 'safe' | 'watchlist' | 'high_risk' = 'safe';
+      if (riskScore >= 5 || isHighAlert || reactionCount >= 3) {
         riskLevel = 'high_risk';
-      } else if (reactionCount >= 1) {
+      } else if (riskScore >= 2 || reactionCount >= 1) {
         riskLevel = 'watchlist';
       }
 
@@ -144,20 +156,32 @@ export async function GET() {
         manufacturerName: b.manufacturer.name,
         expDate: b.expDate,
         reactionCount,
+        severeCount,
+        riskScore,
         riskLevel,
         isHighAlert,
         alertReason: b.highAlerts[0]?.reason || null,
       };
     });
 
-    batchRiskList.sort((a, b) => b.reactionCount - a.reactionCount);
+    batchRiskList.sort((a, b) => b.riskScore - a.riskScore);
 
-    // Monthly trends (group by YYYY-MM)
+    // Monthly trends (formatted timeline: e.g. "Apr 2026", "May 2026")
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const monthlyMap: Record<string, number> = {};
+
+    // Default last 6 months seed
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+      monthlyMap[label] = 0;
+    }
+
     for (const r of reports) {
       const d = new Date(r.reportDate || r.createdAt);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      monthlyMap[key] = (monthlyMap[key] || 0) + 1;
+      const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+      monthlyMap[label] = (monthlyMap[label] || 0) + 1;
     }
 
     const monthlyTrends = Object.entries(monthlyMap).map(([month, count]) => ({

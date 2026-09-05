@@ -17,10 +17,11 @@ import {
   Users,
   CheckCircle2,
   FileText,
+  Lock,
 } from 'lucide-react';
 
 export default function HomePage() {
-  const { switchRole } = useRole();
+  const { currentUser, activeRole } = useRole();
   const [stats, setStats] = useState<any>(null);
 
   useEffect(() => {
@@ -42,11 +43,11 @@ export default function HomePage() {
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-medred-600/20 text-rose-300 border border-medred-500/30 text-xs font-semibold mb-4">
             <Activity className="w-3.5 h-3.5 text-medred-400" />
-            <span>Digital Pharmacovigilance & Batch Traceability</span>
+            <span>Digital Pharmacovigilance &amp; Batch Traceability</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
-            Intelligent Adverse Drug Reaction Monitoring for <span className="text-rose-400">IV Fluids & Injections</span>
+            Intelligent Adverse Drug Reaction Monitoring for <span className="text-rose-400">IV Fluids &amp; Injections</span>
           </h1>
 
           <p className="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
@@ -54,27 +55,27 @@ export default function HomePage() {
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              onClick={() => switchRole('nurse')}
+            <Link
+              href="/nurse"
               className="inline-flex items-center space-x-2 bg-medred-600 hover:bg-medred-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md shadow-rose-900/30 transition-all hover:scale-105"
             >
               <FilePlus2 className="w-4 h-4" />
               <span>Launch Nurse Portal</span>
-            </button>
-            <button
-              onClick={() => switchRole('adr_head')}
+            </Link>
+            <Link
+              href="/adr-head"
               className="inline-flex items-center space-x-2 bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-all"
             >
               <BarChart3 className="w-4 h-4" />
               <span>Open ADR Head Analytics</span>
-            </button>
-            <button
-              onClick={() => switchRole('admin')}
+            </Link>
+            <Link
+              href="/admin"
               className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-sm px-5 py-2.5 rounded-xl border border-slate-700 transition-all"
             >
               <Boxes className="w-4 h-4" />
-              <span>Drug Inventory & Alerts</span>
-            </button>
+              <span>Drug Inventory &amp; Alerts</span>
+            </Link>
           </div>
         </div>
 
@@ -138,7 +139,6 @@ export default function HomePage() {
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
             <Link
               href="/nurse"
-              onClick={() => switchRole('nurse')}
               className="inline-flex items-center space-x-1.5 text-xs font-bold text-medred-600 hover:text-medred-700"
             >
               <span>Access Nurse Desk</span>
@@ -146,7 +146,6 @@ export default function HomePage() {
             </Link>
             <Link
               href="/nurse/report"
-              onClick={() => switchRole('nurse')}
               className="px-3 py-1.5 bg-medred-600 hover:bg-medred-700 text-white text-xs font-semibold rounded-lg shadow-sm"
             >
               + New Report
@@ -177,7 +176,7 @@ export default function HomePage() {
               </li>
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-                <span>Batch Risk Matrix & automatic danger highlighting</span>
+                <span>Batch Risk Matrix &amp; automatic danger highlighting</span>
               </li>
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
@@ -189,7 +188,6 @@ export default function HomePage() {
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
             <Link
               href="/adr-head"
-              onClick={() => switchRole('adr_head')}
               className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-600 hover:text-blue-700"
             >
               <span>Open Analytics Dashboard</span>
@@ -197,7 +195,6 @@ export default function HomePage() {
             </Link>
             <Link
               href="/adr-head/cases"
-              onClick={() => switchRole('adr_head')}
               className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm"
             >
               Review Cases
@@ -224,7 +221,7 @@ export default function HomePage() {
             <ul className="mt-4 space-y-2 text-xs text-slate-700">
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
-                <span>Manage hospital IV fluids & drug batch numbers</span>
+                <span>Manage hospital IV fluids &amp; drug batch numbers</span>
               </li>
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
@@ -240,7 +237,6 @@ export default function HomePage() {
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
             <Link
               href="/admin"
-              onClick={() => switchRole('admin')}
               className="inline-flex items-center space-x-1.5 text-xs font-bold text-amber-600 hover:text-amber-700"
             >
               <span>Manage Hospital Systems</span>
@@ -248,7 +244,6 @@ export default function HomePage() {
             </Link>
             <Link
               href="/admin/inventory"
-              onClick={() => switchRole('admin')}
               className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg shadow-sm"
             >
               Inventory

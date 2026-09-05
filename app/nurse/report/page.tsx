@@ -327,6 +327,7 @@ export default function InitialCaseReportPage() {
                   onChange={(e) => handleBatchChange(e.target.value)}
                   className="w-full text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-medred-500"
                 >
+                  <option value="no_batch">-- Link to No Specific Batch (General Product ADR) --</option>
                   {batches.map((b) => (
                     <option key={b.id} value={b.id}>
                       {b.productName} — Batch {b.batchNo} ({b.manufacturerName})

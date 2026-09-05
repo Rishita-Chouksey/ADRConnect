@@ -142,6 +142,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Reporter user not found.' }, { status: 400 });
     }
 
+    // Fallback batch if no batch selected
+    let fallbackBatch = await db.batch.findFirst();
+
     const newReport = await db.adrReport.create({
       data: {
         hospitalId: hospital.id,
@@ -162,18 +165,24 @@ export async function POST(req: NextRequest) {
         status,
         syncStatus: 'synced',
         medications: {
-          create: (medications || []).map((med: any, index: number) => ({
-            batchId: med.batchId,
-            doseUsed: med.doseUsed || null,
-            routeUsed: med.routeUsed || 'IV Infusion',
-            frequency: med.frequency || null,
-            therapyStartDate: med.therapyStartDate ? new Date(med.therapyStartDate) : null,
-            therapyStopDate: med.therapyStopDate ? new Date(med.therapyStopDate) : null,
-            indication: med.indication || null,
-            actionTaken: med.actionTaken || 'withdrawn',
-            reintroductionReaction: med.reintroductionReaction || 'na',
-            rowOrder: index,
-          })),
+          create: (medications || []).map((med: any, index: number) => {
+            let targetBatchId = med.batchId;
+            if (!targetBatchId || targetBatchId === 'no_batch' || targetBatchId === 'none') {
+              targetBatchId = fallbackBatch?.id;
+            }
+            return {
+              batchId: targetBatchId,
+              doseUsed: med.doseUsed || null,
+              routeUsed: med.routeUsed || 'IV Infusion',
+              frequency: med.frequency || null,
+              therapyStartDate: med.therapyStartDate ? new Date(med.therapyStartDate) : null,
+              therapyStopDate: med.therapyStopDate ? new Date(med.therapyStopDate) : null,
+              indication: med.indication || null,
+              actionTaken: med.actionTaken || 'withdrawn',
+              reintroductionReaction: med.reintroductionReaction || 'na',
+              rowOrder: index,
+            };
+          }),
         },
       },
       include: {

@@ -78,6 +78,7 @@ export interface HospitalUser {
 export interface DemoUser {
   id: string;
   name: string;
+  email?: string;
   role: UserRole;
   employeeId: string;
   ward: string | null;

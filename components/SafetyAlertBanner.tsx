@@ -17,7 +17,10 @@ interface Notice {
   };
 }
 
+import { useRole } from '@/lib/RoleContext';
+
 export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string }) {
+  const { activeRole } = useRole();
   const [notices, setNotices] = useState<Notice[]>([]);
   const [dismissed, setDismissed] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +41,7 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
     return true;
   });
 
-  if (loading || activeNotices.length === 0) return null;
+  if (activeRole === 'adr_head' || loading || activeNotices.length === 0) return null;
 
   return (
     <div className="space-y-2 mb-6">
