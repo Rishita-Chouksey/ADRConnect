@@ -8,6 +8,7 @@ from src.api.auth import router as auth_router
 from src.api.reports import router as reports_router # <-- Add import
 
 from src.api import alerts
+from src.api import batches
 
 app = FastAPI(
     title="ADRConnect API",
@@ -52,3 +53,4 @@ async def root():
 
 # Inside your FastAPI app setup:
 app.include_router(alerts.router, prefix="/api")
+app.include_router(batches.router, prefix="/api")
