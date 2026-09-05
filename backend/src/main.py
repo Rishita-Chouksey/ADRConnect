@@ -7,6 +7,8 @@ from fastapi import FastAPI
 from src.api.auth import router as auth_router
 from src.api.reports import router as reports_router # <-- Add import
 
+from src.api import alerts
+
 app = FastAPI(
     title="ADRConnect API",
     description="Backend API services for ADR reporting, batch traceability, and alerts",
@@ -47,3 +49,6 @@ app.include_router(reports_router, prefix="/api") # <-- Register router
 @app.get("/")
 async def root():
     return {"message": "ADRConnect API Service Active"}
+
+# Inside your FastAPI app setup:
+app.include_router(alerts.router, prefix="/api")
