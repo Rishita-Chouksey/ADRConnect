@@ -227,17 +227,6 @@ export default function Navbar() {
                   <Bell className="w-4 h-4" />
                   <span>Safety Broadcasts</span>
                 </Link>
-                <Link
-                  href="/admin/documents"
-                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    pathname === '/admin/documents'
-                      ? 'bg-rose-50 text-medred-600 font-semibold'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
-                >
-                  <FileText className="w-4 h-4 text-slate-700" />
-                  <span>Official Form Upload</span>
-                </Link>
               </>
             )}
           </nav>

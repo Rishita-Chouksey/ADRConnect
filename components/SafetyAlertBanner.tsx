@@ -26,6 +26,15 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem('adrconnect_dismissed_notices');
+      if (saved) setDismissed(JSON.parse(saved));
+    } catch (e) {
+      console.error('Failed to read dismissed notices from localStorage:', e);
+    }
+  }, []);
+
+  useEffect(() => {
     fetch('/api/notices?activeOnly=true')
       .then((res) => res.json())
       .then((data) => {
@@ -34,6 +43,16 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
       .catch((err) => console.error('Error fetching notices:', err))
       .finally(() => setLoading(false));
   }, []);
+
+  const handleDismiss = (id: string) => {
+    const updated = [...dismissed, id];
+    setDismissed(updated);
+    try {
+      localStorage.setItem('adrconnect_dismissed_notices', JSON.stringify(updated));
+    } catch (e) {
+      console.error('Failed to write dismissed notices to localStorage:', e);
+    }
+  };
 
   const activeNotices = notices.filter((n) => {
     if (dismissed.includes(n.id)) return false;
@@ -110,7 +129,7 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
             </div>
 
             <button
-              onClick={() => setDismissed([...dismissed, notice.id])}
+              onClick={() => handleDismiss(notice.id)}
               className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-black/5 transition-colors ml-3"
               title="Acknowledge alert"
             >

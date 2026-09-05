@@ -53,17 +53,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-4">
-      {/* Bhavishya Government Portal Header Banner */}
-      <div className="w-full max-w-xl bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden">
-        {/* Emblem & Top Bar */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-medred-900 text-white p-6 text-center space-y-2">
-          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md">
+    <div
+      className="min-h-screen relative flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/login-bg.png')" }}
+    >
+      {/* Background Overlay for Contrast & Accessibility */}
+      <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px]" />
+
+      {/* Bhavishya Government Portal Header & Glassmorphic Container */}
+      <div className="relative z-10 w-full max-w-lg bg-white/95 backdrop-blur-md rounded-3xl border border-white/80 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        {/* Emblem & Top Header Bar */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-medred-900 text-white p-6 text-center space-y-2 border-b border-slate-700">
+          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md border border-white/20">
             <Building2 className="w-3.5 h-3.5 text-rose-300" />
             <span>Indian Pharmacovigilance Programme (PvPI) &bull; CDSCO Aligned</span>
           </div>
           <div className="flex items-center justify-center space-x-3 pt-1">
-            <div className="w-10 h-10 rounded-xl bg-medred-600 text-white flex items-center justify-center font-black text-xl shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-medred-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-rose-900/40">
               <Activity className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div className="text-left">
@@ -76,7 +82,7 @@ export default function LoginPage() {
         <div className="p-8 space-y-6">
           {/* Role Selection Chips */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-600 block uppercase tracking-wider text-center">
+            <label className="text-xs font-bold text-slate-700 block uppercase tracking-wider text-center">
               Select Operating Role:
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -144,7 +150,7 @@ export default function LoginPage() {
                   value={employeeId}
                   onChange={(e) => setEmployeeId(e.target.value)}
                   placeholder="e.g. N-1001, AH-2001, AD-3001"
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 font-bold focus:outline-none focus:ring-2 focus:ring-medred-500"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 font-bold focus:outline-none focus:ring-2 focus:ring-medred-500 bg-white"
                   required
                 />
               </div>
@@ -158,7 +164,7 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 font-bold focus:outline-none focus:ring-2 focus:ring-medred-500"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 font-bold focus:outline-none focus:ring-2 focus:ring-medred-500 bg-white"
                   required
                 />
               </div>
@@ -167,14 +173,14 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-medred-600 hover:bg-medred-700 text-white font-bold rounded-xl shadow-lg shadow-rose-200 transition-all text-xs flex items-center justify-center space-x-2"
+              className="w-full py-3 bg-medred-600 hover:bg-medred-700 text-white font-bold rounded-xl shadow-lg shadow-rose-200 transition-all text-xs flex items-center justify-center space-x-2 hover:scale-[1.01]"
             >
               <span>{loading ? 'Authenticating Credentials...' : 'Secure Sign-In to Station'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          <div className="pt-3 border-t border-slate-100 text-center text-[11px] text-slate-400 flex items-center justify-center space-x-1">
+          <div className="pt-3 border-t border-slate-200 text-center text-[11px] text-slate-500 flex items-center justify-center space-x-1">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Encrypted Hospital Station SSO Authentication</span>
           </div>

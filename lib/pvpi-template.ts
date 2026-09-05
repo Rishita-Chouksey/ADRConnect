@@ -59,6 +59,7 @@ export interface PvpiFormData {
     employeeId: string;
     hospital: string;
     ward: string;
+    email?: string | null;
   };
 
   // E. Audit Trail & Forwarding
@@ -135,6 +136,7 @@ export function formatPvpiData(report: any): PvpiFormData {
       employeeId: report.reporter?.employeeId || 'N/A',
       hospital: report.hospital?.name || 'District Maternal Hospital',
       ward: report.ward || 'Maternity Ward',
+      email: report.reporter?.email || null,
     },
 
     amendments: (report.amendments || []).map((a: any) => ({
