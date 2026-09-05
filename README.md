@@ -232,7 +232,10 @@ ADRConnect provides:
 
 ## 👥 Team
 
-Developed as a healthcare technology solution to improve patient safety, pharmacovigilance, and adverse drug reaction monitoring through digital transformation.
+Rishita Chouksey
+Ananya Dubey
+Shreya Singh
+Shreya Deolia
 
 ---
 
