@@ -10,9 +10,11 @@ class AdrHeadDashboardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Inflate the binding class
         binding = ActivityAdrHeadDashboardBinding.inflate(layoutInflater)
+        
+        // Set content view using the binding root
         setContentView(binding.root)
-
-        // Add ADR Head review logic and report fetching here
     }
 }

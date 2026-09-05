@@ -1,0 +1,21 @@
+# Gradle build outputs & caches
+.gradle/
+build/
+app/build/
+**/build/
+
+# Local configuration & environment
+local.properties
+.navigation/
+
+# Android Studio / IntelliJ IDE settings
+.idea/
+*.iml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/caches/
+.idea/libraries/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
