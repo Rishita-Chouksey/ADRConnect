@@ -1,0 +1,338 @@
+// ADR Trace / ADRConnect — Prisma schema
+// Hospital-focused Pharmacovigilance Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum UserRole {
+  nurse
+  adr_head
+  admin
+}
+
+enum CaseType {
+  initial
+  follow_up
+}
+
+enum PatientSex {
+  M
+  F
+  Other
+}
+
+enum ReportOutcome {
+  fatal
+  continuing
+  recovering
+  recovered
+  unknown
+}
+
+enum ReportStatus {
+  draft
+  submitted
+  under_review
+  follow_up_required
+  escalated
+  closed
+}
+
+enum SeverityLevel {
+  mild
+  moderate
+  severe
+  life_threatening
+}
+
+enum NoticeSeverity {
+  info
+  warning
+  critical
+}
+
+enum ForwardedTarget {
+  hospital_pv_unit
+  drug_safety_committee
+  pvpi_regulatory
+}
+
+enum SyncStatus {
+  pending
+  synced
+  failed
+}
+
+enum ActionTaken {
+  withdrawn
+  dose_increased
+  dose_reduced
+  not_changed
+  not_applicable
+  unknown
+}
+
+enum ReintroductionReaction {
+  yes
+  no
+  unknown
+  na
+}
+
+// ---------------------------------------------------------------------------
+// Core tables
+// ---------------------------------------------------------------------------
+
+model Hospital {
+  id        String   @id @default(uuid())
+  name      String
+  state     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  users      User[]
+  adrReports AdrReport[]
+
+  @@map("hospitals")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  hospitalId   String   @map("hospital_id")
+  hospital     Hospital @relation(fields: [hospitalId], references: [id])
+  name         String
+  email        String?  @unique
+  role         UserRole
+  employeeId   String   @unique @map("employee_id")
+  passwordHash String?  @map("password_hash")
+  ward         String?
+  occupation   String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  adrReports           AdrReport[]        @relation("ReportedBy")
+  batchesAdded         Batch[]            @relation("BatchAddedBy")
+  highAlertsFlagged    HighAlert[]        @relation("FlaggedBy")
+  highAlertsResolved   HighAlert[]        @relation("ResolvedBy")
+  amendments           AdrAmendment[]     @relation("AmendedBy")
+  safetyNoticesCreated SafetyNotice[]     @relation("NoticeCreatedBy")
+  forwardingRecords    ForwardingRecord[] @relation("ForwardedBy")
+
+  @@index([hospitalId])
+  @@map("users")
+}
+
+model DrugProduct {
+  id          String   @id @default(uuid())
+  name        String
+  genericName String?  @map("generic_name")
+  form        String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  batches Batch[]
+
+  @@index([name])
+  @@map("drug_products")
+}
+
+model Manufacturer {
+  id        String   @id @default(uuid())
+  name      String
+  address   String?
+  licenseNo String?  @map("license_no")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  batches    Batch[]
+  highAlerts HighAlert[]
+
+  @@index([name])
+  @@map("manufacturers")
+}
+
+/// The core traceability table — one row per (product, manufacturer, batch_no).
+/// Everything the "has this batch reacted before?" feature runs on is built here.
+model Batch {
+  id             String       @id @default(uuid())
+  productId      String       @map("product_id")
+  product        DrugProduct  @relation(fields: [productId], references: [id])
+  manufacturerId String       @map("manufacturer_id")
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id])
+  batchNo        String       @map("batch_no")
+  mfgDate        DateTime?    @map("mfg_date") @db.Date
+  expDate        DateTime?    @map("exp_date") @db.Date
+  barcodeData    String?      @map("barcode_data")
+  addedById      String?      @map("added_by")
+  addedBy        User?        @relation("BatchAddedBy", fields: [addedById], references: [id])
+  createdAt      DateTime     @default(now()) @map("created_at")
+
+  medications   AdrMedication[]
+  highAlerts    HighAlert[]
+  safetyNotices SafetyNotice[]
+
+  @@unique([productId, manufacturerId, batchNo], name: "uniq_product_manufacturer_batch")
+  @@index([batchNo])
+  @@index([manufacturerId])
+  @@map("batches")
+}
+
+/// One row per ADR incident, as filled by the nurse (immutable once submitted —
+/// see AdrAmendment for the ADR Head's clinical-review edit trail).
+model AdrReport {
+  id                   String         @id @default(uuid())
+  localUuid            String?        @unique @map("local_uuid")
+  hospitalId           String         @map("hospital_id")
+  hospital             Hospital       @relation(fields: [hospitalId], references: [id])
+  reporterUserId       String         @map("reporter_user_id")
+  reporter             User           @relation("ReportedBy", fields: [reporterUserId], references: [id])
+
+  caseType             CaseType       @default(initial) @map("case_type")
+  parentReportId       String?        @map("parent_report_id")
+  parentReport         AdrReport?     @relation("FollowUpRelation", fields: [parentReportId], references: [id])
+  followUps            AdrReport[]    @relation("FollowUpRelation")
+
+  // Patient information (deliberately minimal — no name, no ID number)
+  patientInitials      String         @map("patient_initials")
+  patientAge           String         @map("patient_age") // free text: "26 yrs" or "38 wks"
+  patientSex           PatientSex     @map("patient_sex")
+  patientWeightKg      Decimal?       @map("patient_weight_kg")
+
+  // Suspected adverse reaction
+  reactionStartDate    DateTime       @map("reaction_start_date") @db.Date
+  reactionRecoveryDate DateTime?      @map("reaction_recovery_date") @db.Date
+  reactionDescription  String         @map("reaction_description")
+  severity             SeverityLevel? @default(moderate)
+  otherHistory         String?        @map("other_history")
+  seriousnessFlags     Json?          @map("seriousness_flags")
+  outcome              ReportOutcome?
+
+  status               ReportStatus   @default(draft)
+  syncStatus           SyncStatus     @default(pending) @map("sync_status")
+  ward                 String
+  reportDate           DateTime       @default(now()) @map("report_date") @db.Date
+
+  createdAt            DateTime       @default(now()) @map("created_at")
+  updatedAt            DateTime       @updatedAt @map("updated_at")
+
+  medications       AdrMedication[]
+  amendments        AdrAmendment[]
+  forwardingRecords ForwardingRecord[]
+
+  @@index([reactionStartDate])
+  @@index([reporterUserId])
+  @@index([status])
+  @@map("adr_reports")
+}
+
+/// Repeatable rows per report — one per suspected medication (e.g. IV fluid,
+/// then Avil, then Dexamethasone). batch_id is the join that powers the
+/// cross-check / high-alert lookups.
+model AdrMedication {
+  id                     String                  @id @default(uuid())
+  adrReportId            String                  @map("adr_report_id")
+  adrReport              AdrReport               @relation(fields: [adrReportId], references: [id], onDelete: Cascade)
+  batchId                String                  @map("batch_id")
+  batch                  Batch                   @relation(fields: [batchId], references: [id])
+  rowOrder               Int                     @default(0) @map("row_order")
+
+  doseUsed               String?                 @map("dose_used")
+  routeUsed              String?                 @map("route_used")
+  frequency              String?
+  therapyStartDate       DateTime?               @map("therapy_start_date") @db.Date
+  therapyStopDate        DateTime?               @map("therapy_stop_date") @db.Date
+  indication             String?
+  actionTaken            ActionTaken?            @map("action_taken")
+  reintroductionReaction ReintroductionReaction? @map("reintroduction_reaction")
+  /// Filled by the ADR Head only — never shown/editable to the nurse.
+  causalityAssessment    String?                 @map("causality_assessment")
+
+  amendments AdrAmendment[]
+
+  @@index([batchId])
+  @@index([adrReportId])
+  @@map("adr_medications")
+}
+
+/// A batch- or manufacturer-wide safety flag raised by the ADR Head.
+/// At least one of batchId / manufacturerId must be set (enforced in the API layer).
+model HighAlert {
+  id             String        @id @default(uuid())
+  batchId        String?       @map("batch_id")
+  batch          Batch?        @relation(fields: [batchId], references: [id])
+  manufacturerId String?       @map("manufacturer_id")
+  manufacturer   Manufacturer? @relation(fields: [manufacturerId], references: [id])
+  reason         String
+  flaggedById    String        @map("flagged_by")
+  flaggedBy      User          @relation("FlaggedBy", fields: [flaggedById], references: [id])
+  flaggedAt      DateTime      @default(now()) @map("flagged_at")
+  active         Boolean       @default(true)
+  resolvedAt     DateTime?     @map("resolved_at")
+  resolvedById   String?       @map("resolved_by")
+  resolvedBy     User?         @relation("ResolvedBy", fields: [resolvedById], references: [id])
+
+  @@index([batchId, active])
+  @@index([manufacturerId, active])
+  @@map("high_alerts")
+}
+
+/// Safety Notices broadcast by Administrator to Nurses (e.g. Batch recalls, special monitoring)
+model SafetyNotice {
+  id          String         @id @default(uuid())
+  title       String
+  message     String
+  severity    NoticeSeverity @default(warning)
+  batchId     String?        @map("batch_id")
+  batch       Batch?         @relation(fields: [batchId], references: [id])
+  targetWard  String?        @map("target_ward")
+  active      Boolean        @default(true)
+  createdById String         @map("created_by")
+  createdBy   User           @relation("NoticeCreatedBy", fields: [createdById], references: [id])
+  createdAt   DateTime       @default(now()) @map("created_at")
+  resolvedAt  DateTime?      @map("resolved_at")
+
+  @@index([active])
+  @@map("safety_notices")
+}
+
+/// Pharmacovigilance forwarding record (Hospital PV Unit, Drug Safety Committee, Regulatory PvPI/CDSCO)
+model ForwardingRecord {
+  id            String          @id @default(uuid())
+  adrReportId   String          @map("adr_report_id")
+  adrReport     AdrReport       @relation(fields: [adrReportId], references: [id], onDelete: Cascade)
+  forwardedTo   ForwardedTarget @map("forwarded_to")
+  referenceNo   String          @map("reference_no")
+  notes         String?
+  forwardedById String          @map("forwarded_by")
+  forwardedBy   User            @relation("ForwardedBy", fields: [forwardedById], references: [id])
+  forwardedAt   DateTime        @default(now()) @map("forwarded_at")
+
+  @@index([adrReportId])
+  @@map("forwarding_records")
+}
+
+/// Audit trail for every ADR Head edit — preserves immutability of the
+/// original nurse submission (PRD Section 7). Displayed as an addendum.
+model AdrAmendment {
+  id              String         @id @default(uuid())
+  adrReportId     String         @map("adr_report_id")
+  adrReport       AdrReport      @relation(fields: [adrReportId], references: [id], onDelete: Cascade)
+  adrMedicationId String?        @map("adr_medication_id")
+  adrMedication   AdrMedication? @relation(fields: [adrMedicationId], references: [id])
+  fieldName       String         @map("field_name")
+  oldValue        String?        @map("old_value")
+  newValue        String         @map("new_value")
+  editedById      String         @map("edited_by")
+  editedBy        User           @relation("AmendedBy", fields: [editedById], references: [id])
+  editedAt        DateTime       @default(now()) @map("edited_at")
+
+  @@index([adrReportId])
+  @@map("adr_amendments")
+}
