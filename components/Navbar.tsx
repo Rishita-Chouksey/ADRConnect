@@ -70,7 +70,7 @@ export default function Navbar() {
           </button>
 
           <div className="text-slate-300 font-medium text-[11px] hidden sm:block">
-            {t('nav.role', 'Role')}: <span className="text-emerald-400 font-bold uppercase">{activeRole.replace('_', ' ')}</span>
+            {t('nav.role', 'Role:')} <span className="text-emerald-400 font-bold uppercase">{t('role.' + activeRole, activeRole.replace('_', ' '))}</span>
           </div>
 
           <button

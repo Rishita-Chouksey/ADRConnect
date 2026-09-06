@@ -12,9 +12,13 @@ export const LANGUAGES: { code: Language; label: string; native: string }[] = [
 export const translations = {
   en: {
     // Header & Navigation
-    'nav.hospital': 'District Maternal Hospital',
+    'nav.hospital': 'Hospital:',
+    'nav.hospital_name': 'District Maternal Hospital',
+    'nav.subtitle': 'IV Fluids & Injectables Pharmacovigilance',
     'nav.pvpi_active': 'PvPI Vigilance Unit Active',
-    'nav.role': 'Role',
+    'nav.role': 'Role:',
+    'footer.unit': 'District Maternal Hospital Pharmacovigilance Unit',
+    'footer.guidelines': 'Aligned with Indian Pharmacovigilance Programme (PvPI) & CDSCO Guidelines',
     'nav.sign_out': 'Sign Out',
     'nav.portal': 'Portal',
     'nav.dashboard': 'Dashboard',
@@ -160,9 +164,13 @@ export const translations = {
   },
   hi: {
     // Header & Navigation
-    'nav.hospital': 'जिला मातृ अस्पताल',
+    'nav.hospital': 'अस्पताल:',
+    'nav.hospital_name': 'जिला मातृ अस्पताल',
+    'nav.subtitle': 'IV तरल पदार्थ एवं इंजेक्टेबल्स फार्माकोविजिलेंस',
     'nav.pvpi_active': 'PvPI फार्माकोविजिलेंस यूनिट सक्रिय',
-    'nav.role': 'भूमिका',
+    'nav.role': 'भूमिका:',
+    'footer.unit': 'जिला मातृ अस्पताल भेषजसतर्कता इकाई',
+    'footer.guidelines': 'भारतीय भेषजसंहिता आयोग (PvPI) एवं CDSCO दिशा-निर्देशों के अनुरूप',
     'nav.sign_out': 'साइन आउट',
     'nav.portal': 'पोर्टल',
     'nav.dashboard': 'डैशबोर्ड',
@@ -308,9 +316,13 @@ export const translations = {
   },
   bn: {
     // Bengali (বাংলা)
-    'nav.hospital': 'জেলা মাতৃ হাসপাতাল',
+    'nav.hospital': 'হাসপাতাল:',
+    'nav.hospital_name': 'জেলা মাতৃ হাসপাতাল',
+    'nav.subtitle': 'IV তরল ও ইনজেকটেবল ফার্মাকোভিজিল্যান্স',
     'nav.pvpi_active': 'PvPI ফার্মাকোভিজিল্যান্স ইউনিট সক্রিয়',
-    'nav.role': 'ভূমিকা',
+    'nav.role': 'ভূমিকা:',
+    'footer.unit': 'জেলা মাতৃ হাসপাতাল ফার্মাকোভিজিল্যান্স ইউনিট',
+    'footer.guidelines': 'ভারতীয় ফার্মাকোপিয়া কমিশন (PvPI) এবং CDSCO নির্দেশিকা অনুযায়ী',
     'nav.sign_out': 'সাইন আউট',
     'nav.portal': 'পোর্টাল',
     'nav.dashboard': 'ড্যাশবোর্ড',
@@ -449,9 +461,13 @@ export const translations = {
   },
   gu: {
     // Gujarati (ગુજરાતી)
-    'nav.hospital': 'જિલ્લા માતૃ હોસ્પિટલ',
+    'nav.hospital': 'હોસ્પિટલ:',
+    'nav.hospital_name': 'જિલ્લા માતૃ હોસ્પિટલ',
+    'nav.subtitle': 'IV ફ્લુઇડ્સ અને ઇન્જેક્ટેબલ્સ ફાર્માકોવિજિલન્સ',
     'nav.pvpi_active': 'PvPI ફાર્માકોવિજિલન્સ યુનિટ સક્રિય',
-    'nav.role': 'ભૂમિકા',
+    'nav.role': 'ભૂમિકા:',
+    'footer.unit': 'જિલ્લા માતૃ હોસ્પિટલ ફાર્માકોવિજિલન્સ યુનિટ',
+    'footer.guidelines': 'ભારતીય ફાર્માકોપિયા કમિશન (PvPI) અને CDSCO માર્ગદર્શિકા મુજબ',
     'nav.sign_out': 'સાઇન આઉટ',
     'nav.portal': 'પોર્ટલ',
     'nav.dashboard': 'ડેશબોર્ડ',
@@ -590,9 +606,13 @@ export const translations = {
   },
   ta: {
     // Tamil (தமிழ்)
-    'nav.hospital': 'மாவட்ட தாய்மை மருத்துவமனை',
+    'nav.hospital': 'மருத்துவமனை:',
+    'nav.hospital_name': 'மாவட்ட தாய்மை மருத்துவமனை',
+    'nav.subtitle': 'IV திரவங்கள் & ஊசி மருந்துகள் கண்காணிப்பு',
     'nav.pvpi_active': 'PvPI மருந்துக்கண்காணிப்பு பிரிவு செயல்படுகிறது',
-    'nav.role': 'பங்கு',
+    'nav.role': 'பங்கு:',
+    'footer.unit': 'மாவட்ட தாய்மை மருத்துவமனை மருந்துக்கண்காணிப்பு பிரிவு',
+    'footer.guidelines': 'இந்திய மருந்தியல் ஆணையம் (PvPI) & CDSCO வழிகாட்டுதல்களின்படி',
     'nav.sign_out': 'வெளியேறு',
     'nav.portal': 'போர்ட்டல்',
     'nav.dashboard': 'டாஷ்போர்டு',
@@ -731,9 +751,13 @@ export const translations = {
   },
   kn: {
     // Kannada (ಕನ್ನಡ)
-    'nav.hospital': 'ಜಿಲ್ಲಾ ಮಾತೃ ಆಸ್ಪತ್ರೆ',
+    'nav.hospital': 'ಆಸ್ಪತ್ರೆ:',
+    'nav.hospital_name': 'ಜಿಲ್ಲಾ ಮಾತೃ ಆಸ್ಪತ್ರೆ',
+    'nav.subtitle': 'IV ದ್ರವಗಳು ಮತ್ತು ಇಂಜೆಕ್ಟಬಲ್ಸ್ ಫಾರ್ಮಾಕೋವಿಜಿಲೆನ್ಸ್',
     'nav.pvpi_active': 'PvPI ಫಾರ್ಮಾಕೋವಿಜಿಲೆನ್ಸ್ ಯುನಿಟ್ ಸಕ್ರಿಯವಾಗಿದೆ',
-    'nav.role': 'ಪಾತ್ರ',
+    'nav.role': 'ಪಾತ್ರ:',
+    'footer.unit': 'ಜಿಲ್ಲಾ ಮಾತೃ ಆಸ್ಪತ್ರೆ ಫಾರ್ಮಾಕೋವಿಜಿಲೆನ್ಸ್ ಯುನಿಟ್',
+    'footer.guidelines': 'ಭಾರತೀಯ ಫಾರ್ಮಾಕೋಪಿಯಾ ಕಮಿಷನ್ (PvPI) ಮತ್ತು CDSCO ಮಾರ್ಗಸೂಚಿಗಳಂತೆ',
     'nav.sign_out': 'ಸೈನ್ ಔಟ್',
     'nav.portal': 'ಪೋರ್ಟಲ್',
     'nav.dashboard': 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',

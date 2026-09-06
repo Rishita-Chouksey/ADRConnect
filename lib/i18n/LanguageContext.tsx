@@ -44,6 +44,24 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (dynDict) {
       if (dynDict[key]) return dynDict[key];
       if (fallback && dynDict[fallback]) return dynDict[fallback];
+
+      // Substring & prefix matching for long clinical reaction descriptions
+      const cleanTarget = key.trim().toLowerCase();
+      for (const dictKey of Object.keys(dynDict)) {
+        if (dictKey.length > 10) {
+          const cleanKey = dictKey.trim().toLowerCase();
+          const keyPrefix = cleanKey.slice(0, 20);
+          const targetPrefix = cleanTarget.slice(0, 20);
+
+          if (
+            cleanTarget.includes(cleanKey) ||
+            cleanKey.includes(cleanTarget) ||
+            (keyPrefix.length > 5 && (cleanTarget.startsWith(keyPrefix) || cleanKey.startsWith(targetPrefix)))
+          ) {
+            return dynDict[dictKey];
+          }
+        }
+      }
     }
 
     // 3. Fallback to English dictionary

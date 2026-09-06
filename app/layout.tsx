@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 import NextAuthProvider from '@/components/NextAuthProvider';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
+import Footer from '@/components/Footer';
 
 export default function RootLayout({
   children,
@@ -28,16 +29,7 @@ export default function RootLayout({
                 <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
                   {children}
                 </main>
-                <footer className="no-print bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
-                  <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-bold text-slate-800 dark:text-slate-200">ADRConnect</span>
-                      <span>&bull;</span>
-                      <span>District Maternal Hospital Pharmacovigilance Unit</span>
-                    </div>
-                    <p>Aligned with Indian Pharmacovigilance Programme (PvPI) &amp; CDSCO Guidelines</p>
-                  </div>
-                </footer>
+                <Footer />
               </RoleProvider>
             </LanguageProvider>
           </ThemeProvider>
