@@ -14,7 +14,7 @@ interface ApiService {
     suspend fun searchBatches(@Query("q") query: String): Response<List<BatchSearchResult>>
 
     @POST("api/reports/")
-    suspend fun submitReport(@Body report: AdrReportCreate): Response<Unit>
+    suspend fun submitReport(@Body report: AdrReportCreate): Response<ReportSubmissionResponse>
 
     // ADR Head Endpoints
     @GET("api/reports/")
@@ -24,9 +24,6 @@ interface ApiService {
     suspend fun createAlert(@Body alert: HighAlertCreate): Response<Unit>
 
     // Administrator Endpoints
-    @POST("api/batches/")
-    suspend fun createBatch(@Body batch: BatchCreateRequest): Response<Unit>
-
     @GET("api/alerts/")
     suspend fun getAlerts(): Response<List<Any>>
 }

@@ -1,6 +1,7 @@
 package com.example.adrconnect.data.remote
 
 import android.content.Context
+import com.example.adrconnect.BuildConfig
 import com.example.adrconnect.utils.SessionManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,8 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http:// 192.168.137.131/" 
-
     fun getApiService(context: Context): ApiService {
         val sessionManager = SessionManager(context)
         
@@ -23,7 +22,7 @@ object RetrofitClient {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

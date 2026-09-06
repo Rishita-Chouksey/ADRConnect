@@ -16,4 +16,4 @@ class HighAlertResponse(BaseModel):
     flagged_by: UUID
     reason: str
     severity_level: str
-    created_at: datetime
+    flagged_at: datetime

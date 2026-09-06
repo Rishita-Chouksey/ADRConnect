@@ -40,6 +40,7 @@ async def search_batches(
         LEFT JOIN drug_products dp ON b.product_id = dp.id
         LEFT JOIN manufacturers m ON b.manufacturer_id = m.id
         WHERE b.hospital_id = :hospital_id
+          AND b.is_active = TRUE
           AND (
               b.batch_no ILIKE :search_pattern 
               OR b.barcode_data = :exact_query

@@ -54,6 +54,12 @@
             android:layout_marginTop="24dp" />
 
         <EditText
+            android:id="@+id/etPatientInitials"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Patient initials" />
+
+        <EditText
             android:id="@+id/etAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,6 +92,14 @@
             android:layout_height="wrap_content"
             android:text="Submit Report"
             android:layout_marginTop="16dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>

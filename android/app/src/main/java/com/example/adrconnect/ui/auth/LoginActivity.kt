@@ -31,24 +31,24 @@ class LoginActivity : AppCompatActivity() {
         checkExistingSession()
 
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString().trim()
+            val employeeId = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                performLogin(email, password)
+            if (employeeId.isNotEmpty() && password.isNotEmpty()) {
+                performLogin(employeeId, password)
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun performLogin(email: String, pass: String) {
+    private fun performLogin(employeeId: String, pass: String) {
         showLoading(true)
 
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.getApiService(this@LoginActivity)
-                val response = api.login(LoginRequest(email, pass))
+                val response = api.login(LoginRequest(employeeId, pass))
 
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
@@ -67,8 +67,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkExistingSession() {
-        val token = sessionManager.getAuthToken()
-        val role = sessionManager.getUserRole()
+        val token = sessionManager.fetchAuthToken()
+        val role = sessionManager.fetchUserRole()
 
         if (!token.isNullOrEmpty() && !role.isNullOrEmpty()) {
             navigateToRoleDashboard(role)

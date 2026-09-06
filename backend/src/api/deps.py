@@ -50,7 +50,7 @@ async def get_current_user(
     query = text("""
         SELECT id, hospital_id, name, role, employee_id, ward, occupation
         FROM users
-        WHERE id = :user_id;
+        WHERE id = :user_id AND is_active = TRUE;
     """)
     result = await db.execute(query, {"user_id": token_data.user_id})
     user = result.mappings().first()

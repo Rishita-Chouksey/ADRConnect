@@ -7,11 +7,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.adrconnect.data.models.AdrReportCreate
+import com.example.adrconnect.data.models.PatientInfo
+import com.example.adrconnect.data.models.ReactionInfo
+import com.example.adrconnect.data.models.SeriousnessAndOutcome
+import com.example.adrconnect.data.models.SuspectedMedicationCreate
 import com.example.adrconnect.data.remote.RetrofitClient
 import com.example.adrconnect.databinding.ActivityNurseDashboardBinding
 import com.example.adrconnect.ui.auth.LoginActivity
 import com.example.adrconnect.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.UUID
 
 class NurseDashboardActivity : AppCompatActivity() {
 
@@ -80,17 +86,32 @@ class NurseDashboardActivity : AppCompatActivity() {
         }
 
         val ageText = binding.etAge.text.toString().trim()
+        val initials = binding.etPatientInitials.text.toString().trim()
         val gender = binding.etGender.text.toString().trim()
         val reaction = binding.etReaction.text.toString().trim()
         val severity = binding.etSeverity.text.toString().trim()
 
-        if (ageText.isEmpty() || gender.isEmpty() || reaction.isEmpty() || severity.isEmpty()) {
+        if (initials.isEmpty() || ageText.isEmpty() || gender.isEmpty() || reaction.isEmpty() || severity.isEmpty()) {
             Toast.makeText(this, "Please fill in all report fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val age = ageText.toIntOrNull() ?: 0
-        val report = AdrReportCreate(age, gender, batchId, reaction, severity)
+        val patientSex = when (gender.lowercase()) {
+            "male", "m" -> "Male"
+            "female", "f" -> "Female"
+            "other" -> "Other"
+            else -> {
+                Toast.makeText(this, "Sex must be Male, Female, or Other", Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+        val report = AdrReportCreate(
+            local_uuid = UUID.randomUUID().toString(),
+            patient_info = PatientInfo(initials, ageText, patientSex),
+            reaction_info = ReactionInfo(LocalDate.now().toString(), reaction),
+            suspected_medications = listOf(SuspectedMedicationCreate(batchId)),
+            seriousness_and_outcome = SeriousnessAndOutcome(seriousness_flags = listOf(severity))
+        )
 
         showLoading(true)
 
@@ -117,6 +138,7 @@ class NurseDashboardActivity : AppCompatActivity() {
     private fun clearForm() {
         selectedBatchId = null
         binding.etBatchQuery.text?.clear()
+        binding.etPatientInitials.text?.clear()
         binding.etAge.text?.clear()
         binding.etGender.text?.clear()
         binding.etReaction.text?.clear()

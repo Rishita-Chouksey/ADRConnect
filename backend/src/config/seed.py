@@ -1,4 +1,5 @@
 import asyncio
+import os
 from datetime import date
 from passlib.context import CryptContext
 from sqlalchemy import text
@@ -10,6 +11,10 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 async def seed_data():
+    seed_password = os.getenv("SEED_USER_PASSWORD")
+    if not seed_password:
+        raise RuntimeError("Set SEED_USER_PASSWORD before running the seed script")
+
     async with AsyncSessionLocal() as session:
         async with session.begin():
             print("🌱 Seeding initial data...")
@@ -29,7 +34,7 @@ async def seed_data():
                 hospital_id = h_res.scalar()
 
             # 2. Seed Test Users (1 Nurse, 1 ADR Head, 1 Admin)
-            hashed_pwd = hash_password("Password123!")
+            hashed_pwd = hash_password(seed_password)
 
             users_data = [
                 {
@@ -122,7 +127,7 @@ async def seed_data():
 
             print("✅ Seeding completed successfully!")
             print("--------------------------------------------------")
-            print("Test User Accounts (All passwords: Password123!):")
+            print("Test User Accounts (password supplied through SEED_USER_PASSWORD):")
             print("1. Nurse:         NURSE-01")
             print("2. ADR Head:      HEAD-01")
             print("3. Administrator: ADMIN-01")

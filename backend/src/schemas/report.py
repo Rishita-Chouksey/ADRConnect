@@ -46,7 +46,6 @@ class SeriousnessAndOutcome(BaseModel):
 # --- Main API Request Schema ---
 class ADRReportCreate(BaseModel):
     local_uuid: UUID
-    ward: str
     case_type: str = "initial"
     submission_state: str = "complete"
     patient_info: PatientInfo

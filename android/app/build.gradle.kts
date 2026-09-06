@@ -21,6 +21,15 @@ android {
     // Enable View Binding & Data Binding generation
     buildFeatures {
         viewBinding = true
+        buildConfig = true
+    }
+
+    val apiBaseUrl = providers.gradleProperty("ADRCONNECT_API_BASE_URL")
+        .orElse("http://10.0.2.2:8000/")
+        .get()
+
+    defaultConfig {
+        buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
     }
 
     buildTypes {

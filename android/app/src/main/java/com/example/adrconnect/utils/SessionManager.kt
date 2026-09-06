@@ -17,6 +17,7 @@ class SessionManager(context: Context) {
 
     fun fetchAuthToken(): String? = prefs.getString("jwt_token", null)
     fun fetchUserRole(): String? = prefs.getString("user_role", null)
+    fun fetchHospitalId(): String? = prefs.getString("hospital_id", null)
     
     fun clearSession() {
         prefs.edit().clear().apply()

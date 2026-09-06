@@ -1,5 +1,5 @@
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- gen_random_uuid() is provided by pgcrypto.
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Enums
 DO $$ BEGIN
@@ -150,6 +150,7 @@ CREATE TABLE IF NOT EXISTS high_alerts (
     batch_id UUID REFERENCES batches(id) ON DELETE CASCADE,
     manufacturer_id UUID REFERENCES manufacturers(id) ON DELETE CASCADE,
     reason TEXT NOT NULL,
+    severity_level TEXT NOT NULL DEFAULT 'HIGH',
     flagged_by UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
     flagged_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN NOT NULL DEFAULT TRUE,

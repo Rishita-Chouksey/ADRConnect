@@ -66,10 +66,32 @@ async def create_adr_report(
         "outcome": report.seriousness_and_outcome.outcome,
         "concomitant_drugs": json.dumps(report.concomitant_drugs),
         "additional_info": report.additional_info,
-        "ward": report.ward
+        "ward": current_user.ward or "Unassigned"
     }
 
     try:
+        batch_ids = [med.batch_id for med in report.suspected_medications]
+        if not batch_ids:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="At least one suspected medication is required",
+            )
+
+        batch_scope_query = text("""
+            SELECT id
+            FROM batches
+            WHERE hospital_id = :hospital_id AND is_active = TRUE AND id = ANY(:batch_ids);
+        """)
+        scoped_batches = await db.execute(
+            batch_scope_query,
+            {"hospital_id": current_user.hospital_id, "batch_ids": batch_ids},
+        )
+        if len(scoped_batches.scalars().all()) != len(set(batch_ids)):
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="One or more batches are unavailable for this hospital",
+            )
+
         result = await db.execute(report_query, report_params)
         report_row = result.mappings().first()
         adr_report_id = report_row["id"]
@@ -94,6 +116,9 @@ async def create_adr_report(
         await db.commit()
         return {"message": "ADR Report submitted successfully", "report_id": adr_report_id}
 
+    except HTTPException:
+        await db.rollback()
+        raise
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

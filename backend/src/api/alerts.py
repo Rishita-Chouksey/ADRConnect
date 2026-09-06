@@ -48,7 +48,7 @@ async def create_high_alert(
         ) VALUES (
             :hospital_id, :batch_id, :flagged_by, :reason, :severity_level, true
         )
-        RETURNING id, created_at, flagged_at;
+        RETURNING id, flagged_at;
     """)
 
     params = {
@@ -67,7 +67,7 @@ async def create_high_alert(
         return {
             "message": "High alert successfully issued for batch",
             "alert_id": alert_row["id"],
-            "created_at": alert_row["created_at"]
+            "flagged_at": alert_row["flagged_at"]
         }
     except Exception as e:
         await db.rollback()
