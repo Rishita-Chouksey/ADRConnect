@@ -135,6 +135,8 @@ export default function NurseReportsListPage() {
 
                   const translatedStatusLabel = t('status.' + report.status, statusConf.label);
                   const translatedSeverityLabel = t('severity.' + report.severity, sevConf.label);
+                  const translatedWard = t('ward.' + report.ward, t(report.ward));
+                  const translatedReaction = t(report.reactionDescription);
 
                   return (
                     <tr key={report.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
@@ -143,7 +145,7 @@ export default function NurseReportsListPage() {
                           {report.patientInitials} ({report.patientAge}, {report.patientSex})
                         </div>
                         <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                          {report.ward} &bull; {new Date(report.reactionStartDate).toLocaleDateString('en-IN')}
+                          {translatedWard} &bull; {new Date(report.reactionStartDate).toLocaleDateString('en-IN')}
                         </div>
                         {report.caseType === 'follow_up' && (
                           <span className="inline-block mt-0.5 text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300">
@@ -157,14 +159,14 @@ export default function NurseReportsListPage() {
                           {med?.batch?.product?.name || 'Suspected Drug'}
                         </div>
                         <div className="font-mono text-medred-600 dark:text-rose-400 font-bold text-[11px]">
-                          Batch: {med?.batch?.batchNo || 'N/A'}
+                          {t('common.batch', 'Batch')}: {med?.batch?.batchNo || 'N/A'}
                         </div>
                         <div className="text-[10px] text-slate-400 dark:text-slate-500">{med?.batch?.manufacturer?.name}</div>
                       </td>
 
                       <td className="p-3.5 max-w-xs">
                         <p className="text-xs text-slate-700 dark:text-slate-300 line-clamp-2 leading-relaxed">
-                          {report.reactionDescription}
+                          {translatedReaction}
                         </p>
                       </td>
 

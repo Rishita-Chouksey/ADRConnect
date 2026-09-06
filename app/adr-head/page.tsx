@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { SimpleBarChart, DonutChart, MonthlyTrendChart } from '@/components/Charts';
 import SafetyAlertBanner from '@/components/SafetyAlertBanner';
 import {
@@ -20,6 +21,7 @@ import {
 } from 'lucide-react';
 
 export default function AdrHeadDashboard() {
+  const { t } = useLanguage();
   const [analytics, setAnalytics] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -52,10 +54,12 @@ export default function AdrHeadDashboard() {
         <div>
           <div className="flex items-center space-x-2">
             <span className="w-2.5 h-2.5 rounded-full bg-medred-600" />
-            <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100">ADR Head Pharmacovigilance Command</h1>
+            <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100">
+              {t('adr_head.command_title', 'ADR Head Pharmacovigilance Command')}
+            </h1>
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Clinical case evaluation, WHO-UMC causality assessments, batch failure signal detection, and regulatory reporting.
+            {t('adr_head.command_subtitle', 'Clinical case evaluation, WHO-UMC causality assessments, batch failure signal detection, and regulatory reporting.')}
           </p>
         </div>
 

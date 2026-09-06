@@ -18,9 +18,11 @@ interface Notice {
 }
 
 import { useRole } from '@/lib/RoleContext';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string }) {
   const { activeRole } = useRole();
+  const { t } = useLanguage();
   const [notices, setNotices] = useState<Notice[]>([]);
   const [dismissed, setDismissed] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +102,7 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
 
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-bold text-sm tracking-tight">{notice.title}</span>
+                  <span className="font-bold text-sm tracking-tight">{t(notice.title)}</span>
                   <span
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
                       isCritical
@@ -110,21 +112,21 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
                         : 'bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
                     }`}
                   >
-                    {notice.severity}
+                    {t('notice.severity_' + notice.severity, t(notice.severity, notice.severity.toUpperCase()))}
                   </span>
                   {notice.batch && (
                     <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
-                      Batch: {notice.batch.batchNo} ({notice.batch.product.name})
+                      {t('common.batch', 'Batch')}: {notice.batch.batchNo} ({notice.batch.product.name})
                     </span>
                   )}
                   {notice.targetWard && (
                     <span className="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
-                      Ward: {notice.targetWard}
+                      {t('common.ward', 'Ward')}: {t('ward.' + notice.targetWard, t(notice.targetWard))}
                     </span>
                   )}
                 </div>
 
-                <p className="mt-1 text-xs leading-relaxed opacity-90">{notice.message}</p>
+                <p className="mt-1 text-xs leading-relaxed opacity-90">{t(notice.message)}</p>
               </div>
             </div>
 

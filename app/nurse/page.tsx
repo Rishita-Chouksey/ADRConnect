@@ -161,7 +161,9 @@ export default function NurseDashboard() {
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
               {t('nurse.recent_reports', 'Recent ADR Incident Reports')}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Live feed of cases logged in the hospital</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {t('nurse.recent_reports_subtitle', 'Live feed of cases logged in the hospital')}
+            </p>
           </div>
 
           <Link
@@ -174,7 +176,7 @@ export default function NurseDashboard() {
         </div>
 
         {loading ? (
-          <div className="p-8 text-center text-xs text-slate-400">Loading ADR incidents...</div>
+          <div className="p-8 text-center text-xs text-slate-400">{t('nurse_reports.loading_cases', 'Loading ADR incidents...')}</div>
         ) : reports.length === 0 ? (
           <div className="p-8 text-center text-xs text-slate-500 dark:text-slate-400">
             {t('nurse.no_reports', 'No ADR reports recorded yet.')}
@@ -200,6 +202,8 @@ export default function NurseDashboard() {
 
                   const translatedStatusLabel = t('status.' + report.status, statusConf.label);
                   const translatedSeverityLabel = t('severity.' + report.severity, sevConf.label);
+                  const translatedWard = t('ward.' + report.ward, t(report.ward));
+                  const translatedReaction = t(report.reactionDescription);
 
                   return (
                     <tr key={report.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
@@ -208,7 +212,7 @@ export default function NurseDashboard() {
                           {report.patientInitials} ({report.patientAge}, {report.patientSex})
                         </div>
                         <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                          {report.ward} &bull;{' '}
+                          {translatedWard} &bull;{' '}
                           {new Date(report.reactionStartDate || report.createdAt).toLocaleDateString('en-IN')}
                         </div>
                         {report.caseType === 'follow_up' && (
@@ -223,7 +227,7 @@ export default function NurseDashboard() {
                           {firstMed?.batch?.product?.name || 'Suspected Medication'}
                         </div>
                         <div className="text-[11px] font-mono text-medred-600 dark:text-rose-400 font-bold">
-                          Batch: {firstMed?.batch?.batchNo || 'N/A'}
+                          {t('common.batch', 'Batch')}: {firstMed?.batch?.batchNo || 'N/A'}
                         </div>
                         <div className="text-[10px] text-slate-400 dark:text-slate-500">
                           {firstMed?.batch?.manufacturer?.name || 'Unknown Mfr'}
@@ -232,7 +236,7 @@ export default function NurseDashboard() {
 
                       <td className="p-3.5 max-w-xs">
                         <p className="text-xs text-slate-700 dark:text-slate-300 line-clamp-2 leading-relaxed">
-                          {report.reactionDescription}
+                          {translatedReaction}
                         </p>
                       </td>
 
@@ -258,7 +262,7 @@ export default function NurseDashboard() {
                           className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors"
                         >
                           <FileText className="w-3.5 h-3.5 text-medred-600 dark:text-rose-400" />
-                          <span>PvPI Form</span>
+                          <span>{t('common.pvpi_form', 'PvPI Form')}</span>
                         </Link>
                       </td>
                     </tr>

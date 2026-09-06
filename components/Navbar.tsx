@@ -37,7 +37,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-2 font-medium">
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-slate-400">{t('nav.hospital', 'Hospital:')}</span>
-          <span className="text-white font-semibold">District Maternal Hospital</span>
+          <span className="text-white font-semibold">{t('nav.hospital_name', 'District Maternal Hospital')}</span>
           <span className="text-slate-500">|</span>
           <span className="text-slate-400">{t('nav.pvpi_active', 'PvPI Vigilance Unit Active')}</span>
         </div>
@@ -100,7 +100,7 @@ export default function Navbar() {
                     PvPI
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-none">IV Fluids &amp; Injectables Pharmacovigilance</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-none">{t('nav.subtitle', 'IV Fluids & Injectables Pharmacovigilance')}</p>
               </div>
             </Link>
 
@@ -269,7 +269,7 @@ export default function Navbar() {
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
               </div>
               <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                {currentUser.employeeId} &bull; {currentUser.ward}
+                {currentUser.employeeId} &bull; {t('ward.' + (currentUser.ward || 'Maternity Ward'), t(currentUser.ward || 'Maternity Ward'))}
               </div>
             </div>
 
