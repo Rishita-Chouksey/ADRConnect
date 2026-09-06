@@ -61,6 +61,16 @@ export const translations = {
     'nurse.recent_reports': 'Recent ADR Incident Reports',
     'nurse.no_reports': 'No ADR reports recorded yet.',
 
+    // Nurse Reports List Page
+    'nurse_reports.subtitle': 'Complete audit trail of all cases reported from your station. Generate official PvPI formats or resume drafts.',
+    'nurse_reports.filter_all': 'All Case Statuses',
+    'nurse_reports.filter_draft': 'Saved Drafts Only',
+    'nurse_reports.search_placeholder': 'Search by drug, batch, patient...',
+    'nurse_reports.loading_cases': 'Loading cases...',
+    'nurse_reports.no_matching_cases': 'No matching reports found for the selected filter.',
+    'nurse_reports.resume_draft': 'Resume Draft',
+    'nurse_reports.view_case': 'View Case',
+
     // Nurse ADR Form
     'form.title': 'Initial ADR Case Report',
     'form.subtitle': 'Capture adverse drug reaction observed during or following IV fluid / injectable drug administration.',
@@ -112,7 +122,7 @@ export const translations = {
     'dash.escalated_cases': 'Escalated Cases',
     'dash.recent_cases': 'Recent ADR Cases',
 
-    // Common UI Controls
+    // Common UI Controls & Tags
     'common.status': 'Status',
     'common.actions': 'Actions',
     'common.search': 'Search',
@@ -131,14 +141,22 @@ export const translations = {
     'common.ward': 'Ward',
     'common.theme_light': 'Light Mode',
     'common.theme_dark': 'Dark Mode',
+    'badge.follow_up': 'Follow-Up Case',
+    'badge.initial': 'Initial Case',
 
-    // Statuses
+    // Workflow Status Translations
     'status.draft': 'Draft',
     'status.submitted': 'Submitted',
     'status.under_review': 'Under Review',
     'status.follow_up_required': 'Follow-Up Required',
     'status.escalated': 'Escalated',
     'status.closed': 'Closed',
+
+    // Severity Level Translations
+    'severity.mild': 'Mild',
+    'severity.moderate': 'Moderate',
+    'severity.severe': 'Severe',
+    'severity.life_threatening': 'Life Threatening',
   },
   hi: {
     // Header & Navigation
@@ -178,7 +196,7 @@ export const translations = {
 
     // Nurse Dashboard & Quick Actions
     'nurse.title': 'नर्स स्टेशन एवं ADR रिपोर्टिंग',
-    'nurse.logged_in_as': 'के रूप में लॉग इन करें',
+    'nurse.logged_in_as': 'के रूप में लॉग इन हैं',
     'nurse.assigned_to': 'आवंटित वार्ड',
     'nurse.report_initial': '+ प्रारंभिक ADR दर्ज करें',
     'nurse.kpi_submitted': 'ADR प्रमुख को जमा किए गए',
@@ -190,6 +208,16 @@ export const translations = {
     'nurse.card_followup_desc': 'किसी भी पूर्व ADR मामले के लिए नए लक्षण, उपचार प्रतिक्रिया और सुधार की स्थिति दर्ज करें।',
     'nurse.recent_reports': 'हाल ही की ADR घटना रिपोर्टें',
     'nurse.no_reports': 'अभी तक कोई ADR रिपोर्ट दर्ज नहीं की गई है।',
+
+    // Nurse Reports List Page
+    'nurse_reports.subtitle': 'आपके स्टेशन से दर्ज सभी मामलों का पूर्ण ऑडिट ट्रेल। आधिकारिक PvPI प्रारूप बनाएं या ड्राफ्ट फिर से शुरू करें।',
+    'nurse_reports.filter_all': 'सभी केस स्थितियां',
+    'nurse_reports.filter_draft': 'केवल सहेजे गए ड्राफ्ट',
+    'nurse_reports.search_placeholder': 'दवा, बैच, रोगी द्वारा खोजें...',
+    'nurse_reports.loading_cases': 'मामले लोड हो रहे हैं...',
+    'nurse_reports.no_matching_cases': 'चयनित फ़िल्टर के लिए कोई मेल खाती रिपोर्ट नहीं मिली।',
+    'nurse_reports.resume_draft': 'ड्राफ्ट पूरा करें',
+    'nurse_reports.view_case': 'केस देखें',
 
     // Nurse ADR Form
     'form.title': 'प्रारंभिक ADR केस रिपोर्ट',
@@ -242,7 +270,7 @@ export const translations = {
     'dash.escalated_cases': 'आगे भेजे गए मामले',
     'dash.recent_cases': 'हाल के ADR मामले',
 
-    // Common UI Controls
+    // Common UI Controls & Tags
     'common.status': 'स्थिति',
     'common.actions': 'कार्रवाई',
     'common.search': 'खोजें',
@@ -261,14 +289,22 @@ export const translations = {
     'common.ward': 'वार्ड',
     'common.theme_light': 'लाइट मोड',
     'common.theme_dark': 'डार्क मोड',
+    'badge.follow_up': 'फॉलो-अप केस',
+    'badge.initial': 'प्रारंभिक केस',
 
-    // Statuses
+    // Workflow Status Translations
     'status.draft': 'ड्राफ्ट',
     'status.submitted': 'सबमिट किया गया',
     'status.under_review': 'समीक्षा के अधीन',
     'status.follow_up_required': 'फॉलो-अप आवश्यक',
     'status.escalated': 'आगे भेजा गया',
     'status.closed': 'बंद किया गया',
+
+    // Severity Level Translations
+    'severity.mild': 'हल्की',
+    'severity.moderate': 'मध्यम',
+    'severity.severe': 'गंभीर',
+    'severity.life_threatening': 'जीवन-घातक',
   },
   bn: {
     // Bengali (বাংলা)
@@ -317,6 +353,15 @@ export const translations = {
     'nurse.card_followup_desc': 'যেকোনো পূর্ববর্তী ADR মামলার জন্য নতুন লক্ষণ, চিকিৎসার প্রতিক্রিয়া এবং আরোগ্যের অবস্থা নথিভুক্ত করুন।',
     'nurse.recent_reports': 'সাম্প্রতিক ADR ঘটনার রিপোর্ট',
     'nurse.no_reports': 'এখনও কোনো ADR রিপোর্ট নথিবদ্ধ হয়নি।',
+
+    'nurse_reports.subtitle': 'আপনার স্টেশন থেকে নথিভুক্ত সমস্ত কেসের সম্পূর্ণ অডিট ট্রেইল। অফিশিয়াল PvPI ফর্ম তৈরি করুন বা ড্রাফট সম্পন্ন করুন।',
+    'nurse_reports.filter_all': 'সমস্ত কেসের অবস্থা',
+    'nurse_reports.filter_draft': 'কেবল সংরক্ষিত ড্রাফট',
+    'nurse_reports.search_placeholder': 'ওষুধ, ব্যাচ, রোগী দ্বারা সন্ধান করুন...',
+    'nurse_reports.loading_cases': 'কেস লোড হচ্ছে...',
+    'nurse_reports.no_matching_cases': 'নির্বাচিত ফিল্টারের জন্য কোনো মিলযুক্ত রিপোর্ট পাওয়া যায়নি।',
+    'nurse_reports.resume_draft': 'ড্রাফট সম্পন্ন করুন',
+    'nurse_reports.view_case': 'কেস দেখুন',
 
     'form.title': 'প্রাথমিক ADR কেস রিপোর্ট',
     'form.subtitle': 'IV তরল/ইনজেক্টেবল ওষুধ প্রয়োগের সময় বা পরে লক্ষ্য করা প্রতিকূল প্রতিক্রিয়া নথিভুক্ত করুন।',
@@ -385,13 +430,22 @@ export const translations = {
     'common.ward': 'ওয়ার্ড',
     'common.theme_light': 'লাইট মোড',
     'common.theme_dark': 'ডার্ক মোড',
+    'badge.follow_up': 'ফলো-আপ কেস',
+    'badge.initial': 'প্রাথমিক কেস',
 
+    // Workflow Status Translations
     'status.draft': 'ড্রাফট',
     'status.submitted': 'জমা দেওয়া হয়েছে',
     'status.under_review': 'পুনরীক্ষণাধীন',
     'status.follow_up_required': 'ফলো-আপ প্রয়োজন',
     'status.escalated': 'উচ্চস্তরে প্রেরিত',
     'status.closed': 'বন্ধ করা হয়েছে',
+
+    // Severity Level Translations
+    'severity.mild': 'মৃদু',
+    'severity.moderate': 'মাঝারি',
+    'severity.severe': 'তীব্র',
+    'severity.life_threatening': 'জীবনঘাতী',
   },
   gu: {
     // Gujarati (ગુજરાતી)
@@ -440,6 +494,15 @@ export const translations = {
     'nurse.card_followup_desc': 'કોઈપણ અગાઉના ADR કેસ માટે નવા લક્ષણો, સારવાર પ્રતિસાદ અને રિકવરી સ્થિતિ નોંધો.',
     'nurse.recent_reports': 'તાજેતરના ADR ઘસારો રિપોર્ટ્સ',
     'nurse.no_reports': 'હજુ સુધી કોઈ ADR રિપોર્ટ નોંધાયેલ નથી.',
+
+    'nurse_reports.subtitle': 'તમારા સ્ટેશનથી નોંધાયેલા તમામ કેસોનો સંપૂર્ણ ઓડિટ ટ્રેલ. સત્તાવાર PvPI ફોર્મ બનાવો અથવા ડ્રાફ્ટ પૂરો કરો.',
+    'nurse_reports.filter_all': 'તમામ કેસ સ્થિતિ',
+    'nurse_reports.filter_draft': 'માત્ર સાચવેલ ડ્રાફ્ટ્સ',
+    'nurse_reports.search_placeholder': 'દવા, બેચ, દર્દી દ્વારા શોધો...',
+    'nurse_reports.loading_cases': 'કેસો લોડ થઈ રહ્યા છે...',
+    'nurse_reports.no_matching_cases': 'પસંદ કરેલ ફિલ્ટર માટે કોઈ મેળ ખાતો રિપોર્ટ મળ્યો નથી.',
+    'nurse_reports.resume_draft': 'ડ્રાફ્ટ પૂરો કરો',
+    'nurse_reports.view_case': 'કેસ જુઓ',
 
     'form.title': 'પ્રારંભિક ADR કેસ રિપોર્ટ',
     'form.subtitle': 'IV ફ્લુઇડ / ઇન્જેક્ટેબલ દવાના ઉપયોગ દરમિયાન કે પછી જોવા મળેલી પ્રતિકૂળ અસર નોંધો.',
@@ -508,13 +571,22 @@ export const translations = {
     'common.ward': 'વોર્ડ',
     'common.theme_light': 'લાઇટ મોડ',
     'common.theme_dark': 'ડાર્ક મોડ',
+    'badge.follow_up': 'ફોલો-અપ કેસ',
+    'badge.initial': 'પ્રારંભિક કેસ',
 
+    // Workflow Status Translations
     'status.draft': 'ડ્રાફ્ટ',
     'status.submitted': 'સબમિટ કરેલ',
     'status.under_review': 'સમીક્ષા હેઠળ',
     'status.follow_up_required': 'ફોલો-અપ જરૂરી',
     'status.escalated': 'આગળ મોકલેલ',
     'status.closed': 'બંધ કરેલ',
+
+    // Severity Level Translations
+    'severity.mild': 'હળવી',
+    'severity.moderate': 'મધ્યમ',
+    'severity.severe': 'ગંભીર',
+    'severity.life_threatening': 'જીવલેણ',
   },
   ta: {
     // Tamil (தமிழ்)
@@ -563,6 +635,15 @@ export const translations = {
     'nurse.card_followup_desc': 'முந்தைய ADR வழக்குக்கான புதிய அறிகுறிகள் மற்றும் குணமடைதல் நிலையை பதிவு செய்யவும்.',
     'nurse.recent_reports': 'சமீபத்திய ADR சம்பவ அறிக்கைகள்',
     'nurse.no_reports': 'இன்னும் ADR அறிக்கைகள் எதுவும் பதிவு செய்யப்படவில்லை.',
+
+    'nurse_reports.subtitle': 'உங்கள் நிலையத்திலிருந்து பதிவு செய்யப்பட்ட அனைத்து வழக்குகளின் முழுமையான தணிக்கை பாதை.',
+    'nurse_reports.filter_all': 'அனைத்து வழக்கு நிலைகளும்',
+    'nurse_reports.filter_draft': 'சேமிக்கப்பட்ட வரைவுகள் மட்டும்',
+    'nurse_reports.search_placeholder': 'மருந்து, தொகுதி, நோயாளி மூலம் தேடுக...',
+    'nurse_reports.loading_cases': 'வழக்குகள் ஏற்றப்படுகின்றன...',
+    'nurse_reports.no_matching_cases': 'தேர்ந்தெடுக்கப்பட்ட வடிகட்டிக்கு பொருந்தும் அறிக்கைகள் எதுவும் இல்லை.',
+    'nurse_reports.resume_draft': 'வரைவை முடி',
+    'nurse_reports.view_case': 'வழக்கைப் பார்',
 
     'form.title': 'ஆரம்ப ADR வழக்கு அறிக்கை',
     'form.subtitle': 'IV திரவம் / ஊசி மருந்து செலுத்திய போது அல்லது அதற்குப் பிறகு அவதானிக்கப்பட்ட பக்க விளைவுகளைப் பதிவு செய்யவும்.',
@@ -631,13 +712,22 @@ export const translations = {
     'common.ward': 'வார்டு',
     'common.theme_light': 'லைட் மோட்',
     'common.theme_dark': 'டார்க் மோட்',
+    'badge.follow_up': 'பின்தொடர்வு வழக்கு',
+    'badge.initial': 'ஆரம்ப வழக்கு',
 
+    // Workflow Status Translations
     'status.draft': 'வரைவு',
     'status.submitted': 'சமர்ப்பிக்கப்பட்டது',
     'status.under_review': 'பரிசீலனையில்',
     'status.follow_up_required': 'பின்தொடர்வு தேவை',
     'status.escalated': 'மேல்முறையீடு செய்யப்பட்டது',
     'status.closed': 'முடிக்கப்பட்டது',
+
+    // Severity Level Translations
+    'severity.mild': 'லேசானது',
+    'severity.moderate': 'மிதமான',
+    'severity.severe': 'கடுமையான',
+    'severity.life_threatening': 'உயிருக்கு ஆபத்தானது',
   },
   kn: {
     // Kannada (ಕನ್ನಡ)
@@ -686,6 +776,15 @@ export const translations = {
     'nurse.card_followup_desc': 'ಯಾವುದೇ ಹಿಂದಿನ ADR ಪ್ರಕರಣಕ್ಕೆ ಹೊಸ ರೋಗಲಕ್ಷಣಗಳು ಮತ್ತು ಚೇತರಿಕೆಯ ಸ್ಥಿತಿಯನ್ನು ದಾಖಲಿಸಿ.',
     'nurse.recent_reports': 'ಇತ್ತೀಚಿನ ADR ಘಟನೆಯ ವರದಿಗಳು',
     'nurse.no_reports': 'ಇನ್ನೂ ಯಾವುದೇ ADR ವರದಿಗಳನ್ನು ದಾಖಲಿಸಲಾಗಿಲ್ಲ.',
+
+    'nurse_reports.subtitle': 'ನಿಮ್ಮ ಸ್ಟೇಷನ್‌ನಿಂದ ದಾಖಲಾದ ಎಲ್ಲಾ ಪ್ರಕರಣಗಳ ಸಂಪೂರ್ಣ ಆಡಿಟ್ ಟ್ರಯಲ್. ಅಧಿಕೃತ PvPI ಫಾರ್ಮ್ ರಚಿಸಿ ಅಥವಾ ಕರಡು ಪೂರ್ಣಗೊಳಿಸಿ.',
+    'nurse_reports.filter_all': 'ಎಲ್ಲಾ ಪ್ರಕರಣಗಳ ಸ್ಥಿತಿ',
+    'nurse_reports.filter_draft': 'ಉಳಿಸಲಾದ ಕರಡುಗಳು ಮಾತ್ರ',
+    'nurse_reports.search_placeholder': 'ಔಷಧ, ಬ್ಯಾಚ್, ರೋಗಿಯಿಂದ ಹುಡುಕಿ...',
+    'nurse_reports.loading_cases': 'ಪ್ರಕರಣಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...',
+    'nurse_reports.no_matching_cases': 'ಆಯ್ಕೆಮಾಡಿದ ಫಿಲ್ಟರ್‌ಗೆ ಯಾವುದೇ ವರದಿಗಳು ಕಂಡುಬಂದಿಲ್ಲ.',
+    'nurse_reports.resume_draft': 'ಕರಡು ಪೂರ್ಣಗೊಳಿಸಿ',
+    'nurse_reports.view_case': 'ಪ್ರಕರಣ ವೀಕ್ಷಿಸಿ',
 
     'form.title': 'ಆರಂಭಿಕ ADR ಪ್ರಕರಣದ ವರದಿ',
     'form.subtitle': 'IV ದ್ರವ / ಇಂಜೆಕ್ಟಬಲ್ ಔಷಧ ನೀಡಿದಾಗ ಅಥವಾ ನಂತರ ಕಂಡುಬಂದ ದುಷ್ಪರಿಣಾಮಗಳನ್ನು ದಾಖಲಿಸಿ.',
@@ -754,12 +853,21 @@ export const translations = {
     'common.ward': 'ವಾರ್ಡ್',
     'common.theme_light': 'ಲೈಟ್ ಮೋಡ್',
     'common.theme_dark': 'ಡಾರ್ಕ್ ಮೋಡ್',
+    'badge.follow_up': 'ಫಾಲೋ-ಅಪ್ ಪ್ರಕರಣ',
+    'badge.initial': 'ಆರಂಭಿಕ ಪ್ರಕರಣ',
 
+    // Workflow Status Translations
     'status.draft': 'ಕರಡು',
     'status.submitted': 'ಸಲ್ಲಿಸಲಾಗಿದೆ',
     'status.under_review': 'ಪರಿಶೀಲನೆಯಲ್ಲಿದೆ',
     'status.follow_up_required': 'ಫಾಲೋ-ಅಪ್ ಅಗತ್ಯವಿದೆ',
     'status.escalated': 'ಮುಂದಿನ ಹಂತಕ್ಕೆ ಕಳುಹಿಸಲಾಗಿದೆ',
     'status.closed': 'ಮುಕ್ತಾಯಗೊಳಿಸಲಾಗಿದೆ',
+
+    // Severity Level Translations
+    'severity.mild': 'ಸೌಮ್ಯ',
+    'severity.moderate': 'ಮಧ್ಯಮ',
+    'severity.severe': 'ತೀವ್ರ',
+    'severity.life_threatening': 'ಜೀವಕ್ಕೆ ಅಪಾಯಕಾರಿ',
   },
 } as const;

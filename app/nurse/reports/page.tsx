@@ -59,8 +59,11 @@ export default function NurseReportsListPage() {
               {t('nav.my_reports', 'My ADR Reports & Drafts')}
             </h1>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Complete audit trail of all cases reported from your station. Generate official PvPI formats or resume drafts.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            {t(
+              'nurse_reports.subtitle',
+              'Complete audit trail of all cases reported from your station. Generate official PvPI formats or resume drafts.'
+            )}
           </p>
         </div>
 
@@ -79,7 +82,7 @@ export default function NurseReportsListPage() {
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
           <input
             type="text"
-            placeholder={t('common.search', 'Search by drug, batch, patient...')}
+            placeholder={t('nurse_reports.search_placeholder', 'Search by drug, batch, patient...')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-medred-500"
@@ -93,7 +96,7 @@ export default function NurseReportsListPage() {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-medred-500"
           >
-            <option value="all">All Case Statuses</option>
+            <option value="all">{t('nurse_reports.filter_all', 'All Case Statuses')}</option>
             <option value="draft">{t('status.draft', 'Saved Drafts Only')}</option>
             <option value="submitted">{t('status.submitted', 'Submitted')}</option>
             <option value="under_review">{t('status.under_review', 'Under Review')}</option>
@@ -106,10 +109,10 @@ export default function NurseReportsListPage() {
       {/* Reports Table */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
         {loading ? (
-          <div className="p-10 text-center text-xs text-slate-400">Loading cases...</div>
+          <div className="p-10 text-center text-xs text-slate-400">{t('nurse_reports.loading_cases', 'Loading cases...')}</div>
         ) : reports.length === 0 ? (
           <div className="p-10 text-center text-xs text-slate-500 dark:text-slate-400">
-            No matching reports found for the selected filter.
+            {t('nurse_reports.no_matching_cases', 'No matching reports found for the selected filter.')}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -130,6 +133,9 @@ export default function NurseReportsListPage() {
                   const sevConf = SEVERITY_CONFIG[report.severity as keyof typeof SEVERITY_CONFIG] || SEVERITY_CONFIG.moderate;
                   const med = report.medications?.[0];
 
+                  const translatedStatusLabel = t('status.' + report.status, statusConf.label);
+                  const translatedSeverityLabel = t('severity.' + report.severity, sevConf.label);
+
                   return (
                     <tr key={report.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="p-3.5">
@@ -141,7 +147,7 @@ export default function NurseReportsListPage() {
                         </div>
                         {report.caseType === 'follow_up' && (
                           <span className="inline-block mt-0.5 text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300">
-                            Follow-Up
+                            {t('badge.follow_up', 'Follow-Up Case')}
                           </span>
                         )}
                       </td>
@@ -166,7 +172,7 @@ export default function NurseReportsListPage() {
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${sevConf.bg} ${sevConf.color} ${sevConf.border}`}
                         >
-                          {sevConf.label}
+                          {translatedSeverityLabel}
                         </span>
                       </td>
 
@@ -174,7 +180,7 @@ export default function NurseReportsListPage() {
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${statusConf.bg} ${statusConf.color} ${statusConf.border}`}
                         >
-                          {statusConf.label}
+                          {translatedStatusLabel}
                         </span>
                       </td>
 
@@ -185,7 +191,7 @@ export default function NurseReportsListPage() {
                             className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-sm transition-all"
                           >
                             <FilePlus2 className="w-3.5 h-3.5" />
-                            <span>Resume Draft</span>
+                            <span>{t('nurse_reports.resume_draft', 'Resume Draft')}</span>
                           </Link>
                         ) : (
                           <>
@@ -194,7 +200,7 @@ export default function NurseReportsListPage() {
                               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors"
                             >
                               <FileText className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
-                              <span>{t('common.details', 'View Case')}</span>
+                              <span>{t('nurse_reports.view_case', 'View Case')}</span>
                             </Link>
                             <Link
                               href={`/report/${report.id}/form`}

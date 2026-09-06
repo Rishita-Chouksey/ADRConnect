@@ -198,6 +198,9 @@ export default function NurseDashboard() {
                   const sevConf = SEVERITY_CONFIG[report.severity as keyof typeof SEVERITY_CONFIG] || SEVERITY_CONFIG.moderate;
                   const firstMed = report.medications?.[0];
 
+                  const translatedStatusLabel = t('status.' + report.status, statusConf.label);
+                  const translatedSeverityLabel = t('severity.' + report.severity, sevConf.label);
+
                   return (
                     <tr key={report.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="p-3.5">
@@ -210,7 +213,7 @@ export default function NurseDashboard() {
                         </div>
                         {report.caseType === 'follow_up' && (
                           <span className="inline-block mt-0.5 text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300">
-                            Follow-Up Case
+                            {t('badge.follow_up', 'Follow-Up Case')}
                           </span>
                         )}
                       </td>
@@ -237,7 +240,7 @@ export default function NurseDashboard() {
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${sevConf.bg} ${sevConf.color} ${sevConf.border}`}
                         >
-                          {sevConf.label}
+                          {translatedSeverityLabel}
                         </span>
                       </td>
 
@@ -245,7 +248,7 @@ export default function NurseDashboard() {
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${statusConf.bg} ${statusConf.color} ${statusConf.border}`}
                         >
-                          {statusConf.label}
+                          {translatedStatusLabel}
                         </span>
                       </td>
 
