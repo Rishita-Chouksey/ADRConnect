@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRole } from '@/lib/RoleContext';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import SymptomSelector from '@/components/SymptomSelector';
 import BatchQuickCheck from '@/components/BatchQuickCheck';
 import SafetyAlertBanner from '@/components/SafetyAlertBanner';
 import BarcodeQuickFill from '@/components/BarcodeQuickFill';
+import WardSelect from '@/components/WardSelect';
 import {
   FilePlus2,
   Save,
@@ -187,16 +189,16 @@ export default function InitialCaseReportPage() {
       <SafetyAlertBanner wardFilter={ward} />
 
       {/* Main Form Container */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
         {/* Form Title Banner */}
-        <div className="p-6 bg-gradient-to-r from-rose-50 to-white border-b border-slate-200">
+        <div className="p-6 bg-gradient-to-r from-rose-50 to-white dark:from-slate-900 dark:to-slate-800/80 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-medred-600 text-white flex items-center justify-center font-bold shadow-md shadow-rose-200">
+            <div className="w-10 h-10 rounded-xl bg-medred-600 text-white flex items-center justify-center font-bold shadow-md shadow-rose-200 dark:shadow-none">
               <FilePlus2 className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-black text-slate-900">Initial ADR Case Report</h1>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <h1 className="text-xl font-black text-slate-900 dark:text-slate-100">Initial ADR Case Report</h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Capture adverse drug reaction observed during or following IV fluid / injectable drug administration.
               </p>
             </div>
@@ -285,14 +287,10 @@ export default function InitialCaseReportPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Hospital Ward / Unit</label>
-              <input
-                type="text"
-                value={ward}
-                onChange={(e) => setWard(e.target.value)}
-                placeholder="e.g. Maternity Ward, ICU, Medical Ward"
-                className="w-full text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-medred-500"
-              />
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
+                Hospital Ward / Unit <span className="text-medred-600">*</span>
+              </label>
+              <WardSelect value={ward} onChange={(newWard) => setWard(newWard)} />
             </div>
           </div>
 

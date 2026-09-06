@@ -73,10 +73,10 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
             key={notice.id}
             className={`rounded-xl border p-4 shadow-sm transition-all flex items-start justify-between ${
               isCritical
-                ? 'bg-rose-50 border-rose-300 text-rose-950'
+                ? 'bg-rose-50 dark:bg-rose-950/80 border-rose-300 dark:border-rose-800 text-rose-950 dark:text-rose-100'
                 : isWarning
-                ? 'bg-amber-50 border-amber-300 text-amber-950'
-                : 'bg-blue-50 border-blue-200 text-blue-950'
+                ? 'bg-amber-50 dark:bg-amber-950/80 border-amber-300 dark:border-amber-800 text-amber-950 dark:text-amber-100'
+                : 'bg-blue-50 dark:bg-blue-950/80 border-blue-200 dark:border-blue-800 text-blue-950 dark:text-blue-100'
             }`}
           >
             <div className="flex items-start space-x-3">
@@ -104,21 +104,21 @@ export default function SafetyAlertBanner({ wardFilter }: { wardFilter?: string 
                   <span
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
                       isCritical
-                        ? 'bg-rose-200 text-rose-800'
+                        ? 'bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-200'
                         : isWarning
-                        ? 'bg-amber-200 text-amber-800'
-                        : 'bg-blue-200 text-blue-800'
+                        ? 'bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200'
+                        : 'bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
                     }`}
                   >
                     {notice.severity}
                   </span>
                   {notice.batch && (
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/80 border border-slate-300">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                       Batch: {notice.batch.batchNo} ({notice.batch.product.name})
                     </span>
                   )}
                   {notice.targetWard && (
-                    <span className="text-xs px-2 py-0.5 rounded bg-white/80 border border-slate-300">
+                    <span className="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                       Ward: {notice.targetWard}
                     </span>
                   )}

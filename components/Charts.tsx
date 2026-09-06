@@ -38,19 +38,19 @@ export function SimpleBarChart({
             onMouseLeave={() => setHoveredIdx(null)}
             onClick={() => onSelect?.(item)}
             className={`p-2 rounded-xl transition-all cursor-pointer ${
-              isHovered ? 'bg-slate-50 ring-1 ring-slate-200 shadow-sm' : ''
+              isHovered ? 'bg-slate-50 dark:bg-slate-800/80 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm' : ''
             }`}
           >
             <div className="flex justify-between text-xs mb-1">
-              <span className="font-semibold text-slate-800 truncate max-w-[70%]" title={item.name}>
+              <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[70%]" title={item.name}>
                 {item.name}
               </span>
-              <span className="font-bold text-slate-900">
+              <span className="font-bold text-slate-900 dark:text-slate-100">
                 {item.count} {valueLabel}
               </span>
             </div>
 
-            <div className="relative w-full bg-slate-100 rounded-full h-3.5 overflow-hidden border border-slate-200">
+            <div className="relative w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden border border-slate-200 dark:border-slate-700">
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{
@@ -62,10 +62,10 @@ export function SimpleBarChart({
             </div>
 
             {/* Hover Tooltip Subtext */}
-            <div className="flex items-center justify-between text-[10px] text-slate-500 mt-1">
+            <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 mt-1">
               <span>{item.subtext || 'Monitored Lot'}</span>
               {isHovered && (
-                <span className="font-bold text-medred-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200">
+                <span className="font-bold text-medred-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/80 px-1.5 py-0.2 rounded border border-rose-200 dark:border-rose-900">
                   {pct}% of max volume ({item.count} total)
                 </span>
               )}
@@ -106,7 +106,8 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
             cy={size / 2}
             r={radius}
             fill="transparent"
-            stroke="#f1f5f9"
+            stroke="currentColor"
+            className="text-slate-100 dark:text-slate-800"
             strokeWidth={strokeWidth}
           />
           {data.map((slice, idx) => {
@@ -145,14 +146,14 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
               <div className="text-2xl font-black" style={{ color: activeData.color }}>
                 {activeData.count}
               </div>
-              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-700">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-700 dark:text-slate-300">
                 {activeData.label} ({Math.round((activeData.count / total) * 100)}%)
               </div>
             </div>
           ) : (
             <div>
-              <div className="text-2xl font-black text-slate-800">{total}</div>
-              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Total Cases</div>
+              <div className="text-2xl font-black text-slate-800 dark:text-slate-100">{total}</div>
+              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">Total Cases</div>
             </div>
           )}
         </div>
@@ -170,12 +171,12 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
               onMouseEnter={() => setHoveredSlice(idx)}
               onMouseLeave={() => setHoveredSlice(null)}
               className={`flex items-center space-x-2.5 p-1.5 rounded-lg cursor-pointer transition-all ${
-                isHovered ? 'bg-slate-100 font-bold' : ''
+                isHovered ? 'bg-slate-100 dark:bg-slate-800 font-bold' : ''
               }`}
             >
               <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: slice.color }} />
-              <span className="font-medium text-slate-700 w-28 truncate">{slice.label}</span>
-              <span className="font-bold text-slate-900">{slice.count}</span>
+              <span className="font-medium text-slate-700 dark:text-slate-300 w-28 truncate">{slice.label}</span>
+              <span className="font-bold text-slate-900 dark:text-slate-100">{slice.count}</span>
               <span className="text-[11px] text-slate-400 font-medium">({pct}%)</span>
             </div>
           );
@@ -223,8 +224,8 @@ export function MonthlyTrendChart({
           </defs>
 
           {/* Grid lines */}
-          <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#cbd5e1" strokeWidth="1" />
-          <line x1={padding} y1={padding} x2={width - padding} y2={padding} stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3 3" />
+          <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} className="stroke-slate-300 dark:stroke-slate-700" strokeWidth="1" />
+          <line x1={padding} y1={padding} x2={width - padding} y2={padding} className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" strokeDasharray="3 3" />
 
           {/* Area fill */}
           {points.length > 1 && (
@@ -282,7 +283,7 @@ export function MonthlyTrendChart({
                   x={p.x}
                   y={p.y - 12}
                   textAnchor="middle"
-                  className={`text-[10px] font-black ${isHovered ? 'fill-medred-700 font-black' : 'fill-slate-800'}`}
+                  className={`text-[10px] font-black ${isHovered ? 'fill-medred-700 dark:fill-rose-400 font-black' : 'fill-slate-800 dark:fill-slate-200'}`}
                 >
                   {p.count}
                 </text>
@@ -291,7 +292,7 @@ export function MonthlyTrendChart({
                   x={p.x}
                   y={height - 6}
                   textAnchor="middle"
-                  className={`text-[9px] font-semibold ${isHovered ? 'fill-slate-900 font-bold' : 'fill-slate-400'}`}
+                  className={`text-[9px] font-semibold ${isHovered ? 'fill-slate-900 dark:fill-slate-100 font-bold' : 'fill-slate-400 dark:fill-slate-500'}`}
                 >
                   {p.month}
                 </text>
@@ -303,7 +304,7 @@ export function MonthlyTrendChart({
 
       {/* Floating Hover Details Card */}
       {activePt ? (
-        <div className="p-2.5 rounded-xl bg-slate-900 text-white text-xs flex items-center justify-between shadow-lg animate-in fade-in">
+        <div className="p-2.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white text-xs flex items-center justify-between shadow-lg animate-in fade-in border border-slate-800 dark:border-slate-700">
           <div>
             <span className="text-slate-400 text-[10px]">Month:</span>{' '}
             <strong className="text-white">{activePt.month}</strong>
@@ -314,7 +315,7 @@ export function MonthlyTrendChart({
           </div>
         </div>
       ) : (
-        <div className="text-[11px] text-slate-400 text-center italic">Hover over timeline data points for monthly analysis</div>
+        <div className="text-[11px] text-slate-400 dark:text-slate-500 text-center italic">Hover over timeline data points for monthly analysis</div>
       )}
     </div>
   );

@@ -48,13 +48,13 @@ export default function AdrHeadDashboard() {
   return (
     <div className="space-y-8">
       {/* Top Banner & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
         <div>
           <div className="flex items-center space-x-2">
             <span className="w-2.5 h-2.5 rounded-full bg-medred-600" />
-            <h1 className="text-2xl font-black text-slate-900">ADR Head Pharmacovigilance Command</h1>
+            <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100">ADR Head Pharmacovigilance Command</h1>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Clinical case evaluation, WHO-UMC causality assessments, batch failure signal detection, and regulatory reporting.
           </p>
         </div>
