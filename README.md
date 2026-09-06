@@ -233,8 +233,11 @@ ADRConnect provides:
 ## 👥 Team
 
 Rishita Chouksey
+
 Ananya Dubey
+
 Shreya Singh
+
 Shreya Deolia
 
 ---
