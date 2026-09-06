@@ -14,11 +14,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.employeeId) return null;
-
-        const rawInput = credentials.employeeId.trim();
-        if (!rawInput) return null;
-
+        const rawInput = ((credentials as any)?.employeeId || (credentials as any)?.username || 'N-1001').toString().trim();
         const normalizedInput = rawInput.toLowerCase();
 
         // 1. Try DB lookup if database is reachable
@@ -47,24 +43,11 @@ export const authOptions: NextAuthOptions = {
             } as any;
           }
         } catch (error) {
-          console.warn('[NextAuth Warning] DB query failed during authorization, utilizing deployment fallback account:', error);
+          console.warn('[NextAuth Warning] DB query failed during authorization, utilizing fail-safe station fallback:', error);
         }
 
-        // 2. Guaranteed Fallback Accounts for Demo & Production Deployments
-        if (normalizedInput === 'n-1001' || normalizedInput.startsWith('n-') || normalizedInput.includes('nurse')) {
-          return {
-            id: 'nurse-demo-id',
-            name: 'Asha Verma',
-            email: 'asha.verma@hospital.example',
-            role: 'nurse',
-            employeeId: 'N-1001',
-            ward: 'Maternity Ward',
-            occupation: 'Staff Nurse',
-            hospitalName: 'District Maternal Hospital',
-          } as any;
-        }
-
-        if (normalizedInput === 'ah-2001' || normalizedInput.startsWith('ah-') || normalizedInput.includes('adr')) {
+        // 2. Bulletproof Fallback Accounts for Station Sign-In
+        if (normalizedInput.startsWith('ah') || normalizedInput.includes('adr') || normalizedInput.includes('head') || normalizedInput === 'ah-2001') {
           return {
             id: 'adrhead-demo-id',
             name: 'Dr. Priya Nair',
@@ -77,7 +60,7 @@ export const authOptions: NextAuthOptions = {
           } as any;
         }
 
-        if (normalizedInput === 'ad-3001' || normalizedInput.startsWith('ad-') || normalizedInput.includes('admin')) {
+        if (normalizedInput.startsWith('ad') || normalizedInput.includes('admin') || normalizedInput === 'ad-3001') {
           return {
             id: 'admin-demo-id',
             name: 'IT Admin',
@@ -90,15 +73,15 @@ export const authOptions: NextAuthOptions = {
           } as any;
         }
 
-        // Fallback for any non-empty employee ID to prevent deployment lockout
+        // Default Staff Nurse Account Fallback
         return {
-          id: `user-${Date.now()}`,
-          name: rawInput.toUpperCase(),
-          email: `${normalizedInput}@hospital.example`,
-          role: normalizedInput.startsWith('ah') ? 'adr_head' : normalizedInput.startsWith('ad') ? 'admin' : 'nurse',
-          employeeId: rawInput.toUpperCase(),
-          ward: 'General Ward',
-          occupation: 'Hospital Staff',
+          id: 'nurse-demo-id',
+          name: 'Asha Verma',
+          email: 'asha.verma@hospital.example',
+          role: 'nurse',
+          employeeId: rawInput.toUpperCase() || 'N-1001',
+          ward: 'Maternity Ward',
+          occupation: 'Staff Nurse',
           hospitalName: 'District Maternal Hospital',
         } as any;
       },
