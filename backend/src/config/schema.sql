@@ -189,3 +189,5 @@ CREATE TABLE IF NOT EXISTS adr_amendments (
     edited_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_adr_amendments_report ON adr_amendments(adr_report_id);
+ALTER TABLE high_alerts
+    ADD COLUMN IF NOT EXISTS severity_level TEXT NOT NULL DEFAULT 'HIGH';
