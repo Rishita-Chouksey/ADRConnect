@@ -2,6 +2,8 @@
 
 **ADRConnect** is a role-based Pharmacovigilance and Adverse Drug Reaction (ADR) Management Platform designed to digitize, streamline, and enhance ADR reporting within hospitals. The platform replaces traditional paper-based ADR forms with a centralized web-based system that enables nurses, ADR Heads, and administrators to efficiently report, monitor, analyze, and manage drug-related adverse reactions.
 
+https://adr-connect.vercel.app/
+
 ---
 
 ## 🚀 Features
