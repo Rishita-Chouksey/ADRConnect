@@ -53,14 +53,19 @@ export default function LoginPage() {
         password: password.trim(),
       });
 
-      if (res?.error) {
+      if (res?.error || !res?.ok) {
         throw new Error('Authentication failed. Please check Employee ID.');
       }
 
-      // Redirect to respective portal
-      if (employeeId.startsWith('N-')) router.push('/nurse');
-      else if (employeeId.startsWith('AH-')) router.push('/adr-head');
-      else router.push('/admin');
+      // Redirect to respective portal based on role or employee ID prefix
+      const empUpper = employeeId.trim().toUpperCase();
+      if (empUpper.startsWith('AH-') || role === 'adr_head') {
+        router.push('/adr-head');
+      } else if (empUpper.startsWith('AD-') || role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/nurse');
+      }
     } catch (err: any) {
       setErrorMsg(err.message || 'Login failed.');
     } finally {
@@ -191,12 +196,14 @@ export default function LoginPage() {
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-4 text-xs">
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="employeeId" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 {t('login.employee_id_label', 'Official Staff / Employee ID')} <span className="text-medred-600">*</span>
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
+                  id="employeeId"
+                  name="employeeId"
                   type="text"
                   value={employeeId}
                   onChange={(e) => setEmployeeId(e.target.value)}
@@ -208,12 +215,14 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="password" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 {t('login.passcode_label', 'Passcode / Access Key')}
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
+                  id="password"
+                  name="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
