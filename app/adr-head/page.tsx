@@ -28,12 +28,22 @@ export default function AdrHeadDashboard() {
   useEffect(() => {
     fetch('/api/analytics')
       .then((res) => res.json())
-      .then((data) => setAnalytics(data))
-      .catch((e) => console.error(e))
+      .then((data) => {
+        if (data && !data.error) {
+          setAnalytics(data);
+        } else {
+          console.error('Analytics API returned error:', data?.error);
+          setAnalytics({});
+        }
+      })
+      .catch((e) => {
+        console.error('Analytics fetch error:', e);
+        setAnalytics({});
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading || !analytics) {
+  if (loading) {
     return (
       <div className="p-12 text-center text-xs text-slate-400">
         <Activity className="w-8 h-8 text-medred-600 animate-spin mx-auto mb-2" />
@@ -42,10 +52,23 @@ export default function AdrHeadDashboard() {
     );
   }
 
-  const { kpi, mostReportedDrugs, mostReportedIvFluids, manufacturerFrequency, severityDistribution, monthlyTrends, batchRiskMonitoring } =
-    analytics;
+  const kpi = analytics?.kpi || {
+    totalReports: 0,
+    pendingReview: 0,
+    openCases: 0,
+    severeCases: 0,
+    followUpCases: 0,
+    closedCases: 0,
+  };
 
-  const dangerousBatches = batchRiskMonitoring.filter((b: any) => b.riskLevel === 'high_risk');
+  const mostReportedDrugs = Array.isArray(analytics?.mostReportedDrugs) ? analytics.mostReportedDrugs : [];
+  const mostReportedIvFluids = Array.isArray(analytics?.mostReportedIvFluids) ? analytics.mostReportedIvFluids : [];
+  const manufacturerFrequency = Array.isArray(analytics?.manufacturerFrequency) ? analytics.manufacturerFrequency : [];
+  const severityDistribution = Array.isArray(analytics?.severityDistribution) ? analytics.severityDistribution : [];
+  const monthlyTrends = Array.isArray(analytics?.monthlyTrends) ? analytics.monthlyTrends : [];
+  const batchRiskMonitoring = Array.isArray(analytics?.batchRiskMonitoring) ? analytics.batchRiskMonitoring : [];
+
+  const dangerousBatches = batchRiskMonitoring.filter((b: any) => b?.riskLevel === 'high_risk');
 
   return (
     <div className="space-y-8">

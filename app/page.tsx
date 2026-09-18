@@ -27,7 +27,7 @@ export default function HomePage() {
   useEffect(() => {
     fetch('/api/analytics')
       .then((res) => res.json())
-      .then((data) => setStats(data.kpi))
+      .then((data) => setStats(data?.kpi || null))
       .catch((e) => console.error(e));
   }, []);
 

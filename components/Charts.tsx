@@ -11,7 +11,7 @@ interface BarItem {
 }
 
 export function SimpleBarChart({
-  items,
+  items = [],
   maxVal,
   valueLabel = 'ADRs',
   onSelect,
@@ -22,7 +22,8 @@ export function SimpleBarChart({
   onSelect?: (item: BarItem) => void;
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const max = maxVal || Math.max(...items.map((i) => i.count), 1);
+  const safeItems = Array.isArray(items) ? items : [];
+  const max = maxVal || Math.max(...safeItems.map((i) => i?.count || 0), 1);
 
   return (
     <div className="space-y-3">
@@ -84,9 +85,10 @@ interface DonutSlice {
   color: string;
 }
 
-export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string }) {
+export function DonutChart({ data = [], title }: { data: DonutSlice[]; title?: string }) {
   const [hoveredSlice, setHoveredSlice] = useState<number | null>(null);
-  const total = data.reduce((acc, curr) => acc + curr.count, 0) || 1;
+  const safeData = Array.isArray(data) ? data : [];
+  const total = safeData.reduce((acc, curr) => acc + (curr?.count || 0), 0) || 1;
   let accumulatedAngle = 0;
 
   const size = 190;
@@ -94,7 +96,7 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
-  const activeData = hoveredSlice !== null ? data[hoveredSlice] : null;
+  const activeData = hoveredSlice !== null ? safeData[hoveredSlice] : null;
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -110,13 +112,13 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
             className="text-slate-100 dark:text-slate-800"
             strokeWidth={strokeWidth}
           />
-          {data.map((slice, idx) => {
-            const fraction = slice.count / total;
+          {safeData.map((slice, idx) => {
+            const fraction = (slice?.count || 0) / total;
             const strokeDasharray = `${fraction * circumference} ${circumference}`;
             const strokeDashoffset = -accumulatedAngle * circumference;
             accumulatedAngle += fraction;
 
-            if (slice.count === 0) return null;
+            if (!slice || slice.count === 0) return null;
             const isHovered = hoveredSlice === idx;
 
             return (
@@ -161,8 +163,9 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
 
       {/* Legend */}
       <div className="space-y-2 text-xs">
-        {data.map((slice, idx) => {
-          const pct = Math.round((slice.count / total) * 100);
+        {safeData.map((slice, idx) => {
+          if (!slice) return null;
+          const pct = Math.round(((slice.count || 0) / total) * 100);
           const isHovered = hoveredSlice === idx;
 
           return (
@@ -176,7 +179,7 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
             >
               <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: slice.color }} />
               <span className="font-medium text-slate-700 dark:text-slate-300 w-28 truncate">{slice.label}</span>
-              <span className="font-bold text-slate-900 dark:text-slate-100">{slice.count}</span>
+              <span className="font-bold text-slate-900 dark:text-slate-100">{slice.count || 0}</span>
               <span className="text-[11px] text-slate-400 font-medium">({pct}%)</span>
             </div>
           );
@@ -188,13 +191,13 @@ export function DonutChart({ data, title }: { data: DonutSlice[]; title?: string
 
 // --- Interactive Monthly Trend Chart ---
 export function MonthlyTrendChart({
-  trends,
+  trends = [],
 }: {
   trends: Array<{ month: string; count: number }>;
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  if (!trends || trends.length === 0) {
+  if (!trends || !Array.isArray(trends) || trends.length === 0) {
     return <div className="text-xs text-slate-400 py-6 text-center">No trend data recorded yet.</div>;
   }
 
